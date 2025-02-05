@@ -18,7 +18,7 @@
                 "traceResponse": true
             },
             "args": [
-                "--elf", "./tests/assets/ex4"
+                
             ]
         },
         {
@@ -33,7 +33,7 @@
             "externalConsole": false,
             "sourceLanguages": ["rust"],
             "args": [
-                "--elf", "./tests/assets/ex4"
+                
             ]
         }
     ]
