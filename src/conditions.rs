@@ -1,3 +1,4 @@
+use crate::Error;
 
 #[derive(Debug, PartialEq)]
 #[repr(u8)]
@@ -11,8 +12,7 @@ pub enum Condition {
 }
 
 impl TryFrom<u8> for Condition {
-    // Add custom error type
-    type Error = ();
+    type Error = Error;
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
         match value {
@@ -22,7 +22,7 @@ impl TryFrom<u8> for Condition {
             3 => Ok(Condition::LessThanUnsigned),
             4 => Ok(Condition::GreaterEqual),
             5 => Ok(Condition::GreaterEqualUnsigned),
-            _ => Err(()),
+            _ => Err(Error::InvalidCondition),
         }
     }
 }
@@ -39,6 +39,6 @@ mod tests {
         assert_eq!(Condition::try_from(3), Ok(Condition::LessThanUnsigned));
         assert_eq!(Condition::try_from(4), Ok(Condition::GreaterEqual));
         assert_eq!(Condition::try_from(5), Ok(Condition::GreaterEqualUnsigned));
-        assert_eq!(Condition::try_from(6), Err(()));
+        assert_eq!(Condition::try_from(6), Err(Error::InvalidCondition));
     }
 }
