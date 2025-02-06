@@ -1,4 +1,6 @@
-use crate::helpers::extract_bits_from_u32;
+use crate::registers::Register;
+use crate::conditions::Condition;
+
 pub type Instruction32 = u32;
 pub enum DecodedInstruction32 {
     RType {
@@ -42,55 +44,204 @@ pub enum DecodedInstruction32 {
     },
 }
 
-pub struct MatchedInstruction32 {
-    pub name: String,
-    pub instruction: DecodedInstruction32,
+#[allow(non_camel_case_types)]
+pub enum ParsedInstruction32 {
+    add {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    sub {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    xor {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    or {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    and {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    sll {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    srl {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    sra {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    slt {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    sltu {
+        rd: Register,
+        rs1: Register,
+        rs2: Register,
+    },
+    addi {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    xori {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    ori {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    andi {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    slli {
+        rd: Register,
+        rs1: Register,
+        shamt: u8,
+    },
+    srli {
+        rd: Register,
+        rs1: Register,
+        shamt: u8,
+    },
+    srai {
+        rd: Register,
+        rs1: Register,
+        shamt: u8,
+    },
+    slti {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    sltiu {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    lb {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    lh {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    lw {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    lbu {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    lhu {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    sb {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+    },
+    sh {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+    },
+    sw {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+    },
+    beq {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+        condition: Condition,
+    },
+    bne {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+        condition: Condition,
+    },
+    blt {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+        condition: Condition,
+    },
+    bge {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+        condition: Condition,
+    },
+    bltu {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+        condition: Condition,
+    },
+    bgeu {
+        rs1: Register,
+        rs2: Register,
+        imm: i32,
+        condition: Condition,
+    },
+    jal {
+        rd: Register,
+        imm: i32,
+    },
+    jalr {
+        rd: Register,
+        rs1: Register,
+        imm: i32,
+    },
+    lui {
+        rd: Register,
+        imm: i32,
+    },
+    auipc {
+        rd: Register,
+        imm: i32,
+    },
+    ecall,
+    ebreak,
 }
 
 pub trait DecodeInstruction32 {
     fn decode_instruction32(&self) -> Result<DecodedInstruction32, &'static str>;
 }
 
-pub trait MatchDecodedInstruction32 {
-    fn match_instruction32(&self) -> Result<MatchedInstruction32, &'static str>;
-}
-
-impl DecodeInstruction32 for Instruction32 {
-    fn decode_instruction32(&self) -> Result<DecodedInstruction32, &'static str> {
-        let opcode = extract_bits_from_u32(*self, 0, 6)?;
-        let decoded = match opcode {
-            0b0110011 => decode_rtype32(*self)?,
-            0b0010011 | 0b0000011 | 0b1100111 => decode_itype32(*self)?,
-            0b0100011 => decode_stype32(*self)?,
-            0b1100011 => decode_btype32(*self)?,
-            0b0110111 | 0b0010111 => decode_utype32(*self)?,
-            0b1101111 => decode_jtype32(*self)?,
-            _ => return Err("Invalid opcode"),
-        };
-        Ok(decoded)
-    }
-}
-
-fn decode_rtype32(instruction: Instruction32) -> Result<DecodedInstruction32, &'static str> {
-    todo!()
-}
-
-fn decode_itype32(instruction: Instruction32) -> Result<DecodedInstruction32, &'static str> {
-    todo!()
-}
-
-fn decode_stype32(instruction: Instruction32) -> Result<DecodedInstruction32, &'static str> {
-    todo!()
-}
-
-fn decode_btype32(instruction: Instruction32) -> Result<DecodedInstruction32, &'static str> {
-    todo!()
-}
-
-fn decode_utype32(instruction: Instruction32) -> Result<DecodedInstruction32, &'static str> {
-    todo!()
-}
-
-fn decode_jtype32(instruction: Instruction32) -> Result<DecodedInstruction32, &'static str> {
-    todo!()
+pub trait ParseInstruction32 {
+    fn parse_instruction32(&self) -> Result<ParsedInstruction32, &'static str>;
 }
