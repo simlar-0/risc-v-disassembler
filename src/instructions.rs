@@ -45,6 +45,7 @@ pub enum DecodedInstruction32 {
     },
 }
 
+#[derive(Debug, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum ParsedInstruction32 {
     add {
@@ -100,22 +101,22 @@ pub enum ParsedInstruction32 {
     addi {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     xori {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     ori {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     andi {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     slli {
         rd: Register,
@@ -135,52 +136,52 @@ pub enum ParsedInstruction32 {
     slti {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     sltiu {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     lb {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     lh {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     lw {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     lbu {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     lhu {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     sb {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
     },
     sh {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
     },
     sw {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
     },
     beq {
         rs1: Register,
@@ -197,25 +198,25 @@ pub enum ParsedInstruction32 {
     blt {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
         condition: Condition,
     },
     bge {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
         condition: Condition,
     },
     bltu {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
         condition: Condition,
     },
     bgeu {
         rs1: Register,
         rs2: Register,
-        imm: i32,
+        imm: i16,
         condition: Condition,
     },
     jal {
@@ -225,7 +226,7 @@ pub enum ParsedInstruction32 {
     jalr {
         rd: Register,
         rs1: Register,
-        imm: i32,
+        imm: i16,
     },
     lui {
         rd: Register,
