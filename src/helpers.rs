@@ -41,3 +41,23 @@ pub fn extract_bits_from_u32(number: u32, start_bit: u32, end_bit: u32) -> Resul
     
     Ok(result)
 }
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_extract_bits_from_u32() {
+        let number = 0b1111_1111_1001_1111_1111_1111_1111_1010;
+        let result = extract_bits_from_u32(number, 0, 3);
+        assert_eq!(result, Ok(0b1010));
+
+        let result = extract_bits_from_u32(number, 4, 7);
+        assert_eq!(result, Ok(0b1111));
+
+        let result = extract_bits_from_u32(number, 20, 23);
+        assert_eq!(result, Ok(0b1001));
+
+        let result = extract_bits_from_u32(number, 24, 31);
+        assert_eq!(result, Ok(0b1111_1111));
+    }
+}
