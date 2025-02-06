@@ -1,4 +1,4 @@
-mod helpers;
+mod macros;
 mod registers;
 mod conditions;
 mod instructions;
