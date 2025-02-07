@@ -38,7 +38,6 @@ macro_rules! extract_bits {
 pub(crate) use extract_bits;
 
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -61,6 +60,25 @@ mod tests {
         let result = extract_bits!(number, 56, 63);
         assert_eq!(result, Ok(0b1101_1111));
     }
+
+    #[test]
+    fn test_extract_bits_from_i64() {
+        let number: i64 = 0b101_1111_1001_1111_1111_1111_1111_1010_1110_1111_1001_1111_1111_1111_1111_1010;
+        let result = extract_bits!(number, 0, 3);
+        assert_eq!(result, Ok(0b1010));
+
+        let result = extract_bits!(number, 4, 7);
+        assert_eq!(result, Ok(0b1111));
+
+        let result = extract_bits!(number, 20, 23);
+        assert_eq!(result, Ok(0b1001));
+
+        let result = extract_bits!(number, 24, 31);
+        assert_eq!(result, Ok(0b1110_1111));
+
+        let result = extract_bits!(number, 56, 63);
+        assert_eq!(result, Ok(0b101_1111));
+    }
     
     #[test]
     fn test_extract_bits_u32() {
@@ -76,6 +94,22 @@ mod tests {
 
         let result = extract_bits!(number, 24, 31);
         assert_eq!(result, Ok(0b1011_1111));
+    }
+
+    #[test]
+    fn test_extract_bits_i32() {
+        let number: u32 = 0b011_1111_1001_1111_1111_1111_1111_1010;
+        let result = extract_bits!(number, 0, 3);
+        assert_eq!(result, Ok(0b1010));
+
+        let result = extract_bits!(number, 4, 7);
+        assert_eq!(result, Ok(0b1111));
+
+        let result = extract_bits!(number, 20, 23);
+        assert_eq!(result, Ok(0b1001));
+
+        let result = extract_bits!(number, 24, 31);
+        assert_eq!(result, Ok(0b011_1111));
     }
 
     #[test]
@@ -95,6 +129,22 @@ mod tests {
     }
 
     #[test]
+    fn test_extract_bits_i16() {
+        let number: u16 = 0b100_1111_1001_1111;
+        let result = extract_bits!(number, 0, 3);
+        assert_eq!(result, Ok(0b1111));
+
+        let result = extract_bits!(number, 4, 7);
+        assert_eq!(result, Ok(0b1001));
+
+        let result = extract_bits!(number, 8, 11);
+        assert_eq!(result, Ok(0b1111));
+
+        let result = extract_bits!(number, 12, 15);
+        assert_eq!(result, Ok(0b100));
+    }
+
+    #[test]
     fn test_extract_bits_u8() {
         let number: u8 = 0b1011_1010;
         let result = extract_bits!(number, 0, 3);
@@ -102,6 +152,16 @@ mod tests {
 
         let result = extract_bits!(number, 4, 7);
         assert_eq!(result, Ok(0b1011));
+    }
+
+    #[test]
+    fn test_extract_bits_i8() {
+        let number: u8 = 0b011_1010;
+        let result = extract_bits!(number, 0, 3);
+        assert_eq!(result, Ok(0b1010));
+
+        let result = extract_bits!(number, 4, 7);
+        assert_eq!(result, Ok(0b011));
     }
 
 }
