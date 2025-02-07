@@ -278,4 +278,27 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(result.err(), Some("Invalid imm"));
     }
+
+    #[test]
+    fn test_parse_itype32_jalr() {
+        let result = parse_itype32(&0b1100111, &0b00001, &0b000, &0b00010, &0b000000000001).unwrap();
+        assert_eq!(result, ParsedInstruction32::jalr {
+            rd: Register::try_from(0b00001).unwrap(),
+            rs1: Register::try_from(0b00010).unwrap(),
+            imm: 0b000000000001,
+        });
+    }
+
+    #[test]
+    fn test_parse_itype32_ecall() {
+        let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &0b000000000000).unwrap();
+        assert_eq!(result, ParsedInstruction32::ecall);
+    }
+
+    #[test]
+    fn test_parse_itype32_ebreak() {
+        let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &0b000000000001).unwrap();
+        assert_eq!(result, ParsedInstruction32::ebreak);
+    }
+    
 }
