@@ -65,4 +65,66 @@ mod tests {
             imm: 0b000000000001,
         });
     }
+
+    #[test]
+    fn test_parse_instruction32_stype_sb() {
+        let decoded = DecodedInstruction32::SType {
+            opcode: 0b0100011,
+            imm: 0b000000000001,
+            funct3: 0b000,
+            rs1: 0b00010,
+            rs2: 0b00011,
+        };
+        let result = decoded.parse_instruction32().unwrap();
+        assert_eq!(result, ParsedInstruction32::sb {
+            rs1: Register::try_from(0b00010).unwrap(),
+            rs2: Register::try_from(0b00011).unwrap(),
+            imm: 0b000000000001,
+        });
+    }
+
+    #[test]
+    fn test_parse_instruction32_btype_beq() {
+        let decoded = DecodedInstruction32::BType {
+            opcode: 0b1100011,
+            imm: 0b000000000001,
+            funct3: 0b000,
+            rs1: 0b00010,
+            rs2: 0b00011,
+        };
+        let result = decoded.parse_instruction32().unwrap();
+        assert_eq!(result, ParsedInstruction32::beq {
+            rs1: Register::try_from(0b00010).unwrap(),
+            rs2: Register::try_from(0b00011).unwrap(),
+            imm: 0b000000000001,
+        });
+    }
+
+    #[test]
+    fn test_parse_instruction32_utype_lui() {
+        let decoded = DecodedInstruction32::UType {
+            opcode: 0b0110111,
+            rd: 0b00001,
+            imm: 0b000000000001,
+        };
+        let result = decoded.parse_instruction32().unwrap();
+        assert_eq!(result, ParsedInstruction32::lui {
+            rd: Register::try_from(0b00001).unwrap(),
+            imm: 0b000000000001,
+        });
+    }
+
+    #[test]
+    fn test_parse_instruction32_jtype_jal() {
+        let decoded = DecodedInstruction32::JType {
+            opcode: 0b1101111,
+            rd: 0b00001,
+            imm: 0b000000000001,
+        };
+        let result = decoded.parse_instruction32().unwrap();
+        assert_eq!(result, ParsedInstruction32::jal {
+            rd: Register::try_from(0b00001).unwrap(),
+            imm: 0b000000000001,
+        });
+    }
 }
