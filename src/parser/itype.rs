@@ -75,7 +75,7 @@ fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &u16) -> Result<Parsed
         0b011 => Ok(ParsedInstruction32::sltiu {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm as i16,
+            imm: *imm,
         }),
         0b100 => Ok(ParsedInstruction32::xori {
             rd: Register::try_from(*rd)?,
@@ -300,5 +300,5 @@ mod tests {
         let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &0b000000000001).unwrap();
         assert_eq!(result, ParsedInstruction32::ebreak);
     }
-    
+
 }

@@ -1,6 +1,5 @@
 use crate::helpers::variable_bit_structures::VarBitInt;
 use crate::registers::Register;
-use crate::conditions::Condition;
 
 pub type Instruction32 = u32;
 pub enum DecodedInstruction32 {
@@ -141,7 +140,7 @@ pub enum ParsedInstruction32 {
     sltiu {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: u16,
     },
     lb {
         rd: Register,
@@ -186,38 +185,32 @@ pub enum ParsedInstruction32 {
     beq {
         rs1: Register,
         rs2: Register,
-        imm: i32,
-        condition: Condition,
+        imm: i16,
     },
     bne {
         rs1: Register,
         rs2: Register,
-        imm: i32,
-        condition: Condition,
+        imm: i16,
     },
     blt {
         rs1: Register,
         rs2: Register,
         imm: i16,
-        condition: Condition,
     },
     bge {
         rs1: Register,
         rs2: Register,
         imm: i16,
-        condition: Condition,
     },
     bltu {
         rs1: Register,
         rs2: Register,
-        imm: i16,
-        condition: Condition,
+        imm: u16,
     },
     bgeu {
         rs1: Register,
         rs2: Register,
-        imm: i16,
-        condition: Condition,
+        imm: u16,
     },
     jal {
         rd: Register,
