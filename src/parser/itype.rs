@@ -1,6 +1,6 @@
 use crate::instructions::ParsedInstruction32;
 use crate::registers::Register;
-use crate::helpers::extract_bits;
+use crate::macros::extract_bits;
 
 pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &u16) -> Result<ParsedInstruction32, &'static str> {
     match opcode {
@@ -53,8 +53,8 @@ fn parse_itype32_load(funct3: &u8, rd: &u8, rs1: &u8, imm: &u16) -> Result<Parse
 }
 
 fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &u16) -> Result<ParsedInstruction32, &'static str> {
-    let imm_upper_bits = extract_bits(*imm, 5, 11)?;
-    let shamt = extract_bits(*imm, 0, 4)?;
+    let imm_upper_bits = extract_bits!(*imm, 5, 11)?;
+    let shamt = extract_bits!(*imm, 0, 4)?;
 
     match funct3 {
         0b000 => Ok(ParsedInstruction32::addi {
