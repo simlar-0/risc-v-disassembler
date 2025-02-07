@@ -2,46 +2,57 @@ use crate::instructions::ParsedInstruction32;
 use crate::registers::Register;
 use crate::helpers::extract_bits;
 
-pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &i16) -> Result<ParsedInstruction32, &'static str> {
+pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &u16) -> Result<ParsedInstruction32, &'static str> {
     match opcode {
         0b0000011 => parse_itype32_load(funct3, rd, rs1, imm),
         0b0010011 => parse_itype32_alu(funct3, rd, rs1, imm),
+        0b1100111 => Ok(ParsedInstruction32::jalr { 
+            rd: Register::try_from(*rd)?,
+            rs1: Register::try_from(*rs1)?,
+            imm: *imm as i16}),
+        0b1110011 => {
+            match imm {
+                0b000000000000 => Ok(ParsedInstruction32::ecall),
+                0b000000000001 => Ok(ParsedInstruction32::ebreak),
+                _ => Err("Invalid funct3"),
+            }
+        },
         _ => Err("Invalid opcode"),
     }
 }
 
-fn parse_itype32_load(funct3: &u8, rd: &u8, rs1: &u8, imm: &i16) -> Result<ParsedInstruction32, &'static str> {
+fn parse_itype32_load(funct3: &u8, rd: &u8, rs1: &u8, imm: &u16) -> Result<ParsedInstruction32, &'static str> {
     match funct3 {
         0b000 => Ok(ParsedInstruction32::lb {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b001 => Ok(ParsedInstruction32::lh {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b010 => Ok(ParsedInstruction32::lw {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b100 => Ok(ParsedInstruction32::lbu {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b101 => Ok(ParsedInstruction32::lhu {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         _ => Err("Invalid funct3"),
     }
 }
 
-fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &i16) -> Result<ParsedInstruction32, &'static str> {
+fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &u16) -> Result<ParsedInstruction32, &'static str> {
     let imm_upper_bits = extract_bits(*imm, 5, 11)?;
     let shamt = extract_bits(*imm, 0, 4)?;
 
@@ -49,7 +60,7 @@ fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &i16) -> Result<Parsed
         0b000 => Ok(ParsedInstruction32::addi {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b001 => Ok(ParsedInstruction32::slli {
             rd: Register::try_from(*rd)?,
@@ -59,17 +70,17 @@ fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &i16) -> Result<Parsed
         0b010 => Ok(ParsedInstruction32::slti {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b011 => Ok(ParsedInstruction32::sltiu {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b100 => Ok(ParsedInstruction32::xori {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b101 => {
             match imm_upper_bits {
@@ -89,12 +100,12 @@ fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &i16) -> Result<Parsed
         0b110 => Ok(ParsedInstruction32::ori {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b111 => Ok(ParsedInstruction32::andi {
             rd: Register::try_from(*rd)?,
             rs1: Register::try_from(*rs1)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         _ => Err("Invalid funct3"),
     }

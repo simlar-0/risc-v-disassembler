@@ -1,22 +1,22 @@
 use crate::instructions::ParsedInstruction32;
 use crate::registers::Register;
 
-pub(crate) fn parse_stype32(_opcode: &u8, imm: &i16, funct3: &u8, rs1: &u8, rs2: &u8) -> Result<ParsedInstruction32, &'static str> {
+pub(crate) fn parse_stype32(_opcode: &u8, imm: &u16, funct3: &u8, rs1: &u8, rs2: &u8) -> Result<ParsedInstruction32, &'static str> {
     match funct3 {
         0b000 => Ok(ParsedInstruction32::sb {
             rs1: Register::try_from(*rs1)?,
             rs2: Register::try_from(*rs2)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b001 => Ok(ParsedInstruction32::sh {
             rs1: Register::try_from(*rs1)?,
             rs2: Register::try_from(*rs2)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         0b010 => Ok(ParsedInstruction32::sw {
             rs1: Register::try_from(*rs1)?,
             rs2: Register::try_from(*rs2)?,
-            imm: *imm,
+            imm: *imm as i16,
         }),
         _ => Err("Invalid funct3"),
     }   
