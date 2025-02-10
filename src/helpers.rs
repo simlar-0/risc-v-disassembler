@@ -1,3 +1,5 @@
+use crate::Error;
+
 /// Extracts a range of bits from a u32 number
 /// 
 /// # Arguments
@@ -19,12 +21,12 @@
 /// assert_eq!(result, Ok(0b1010));
 /// ```
 /// 
-pub fn extract_bits_from_u32(number: u32, start_bit: u32, end_bit: u32) -> Result<u32, &'static str> {
+pub fn extract_bits_from_u32(number: u32, start_bit: u32, end_bit: u32) -> Result<u32, Error> {
     if start_bit > end_bit {
-        return Err("Start position must be less than or equal to end position");
+        return Err(Error::BitExtractionError("Start position must be less than or equal to end position".to_string()));
     }
     if end_bit >= 32 {
-        return Err("End position must be less than 32");
+        return Err(Error::BitExtractionError(("End position must be less than 32".to_string())));
     }
 
     let num_bits = end_bit - start_bit + 1;
