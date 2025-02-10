@@ -1,4 +1,5 @@
 mod macros;
+mod variable_bit_integers;
 mod registers;
 mod conditions;
 mod instructions;
