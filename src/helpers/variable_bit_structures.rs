@@ -1,22 +1,25 @@
+/// Represents an integer with a variable number of bits, 
+/// which can be interpreted as both signed and unsigned.
+/// 
 #[derive(Copy, Clone)]
-struct VarBit {
+pub struct VarBitInt {
     bits: u128,
     size: u8,
 }
 
-impl VarBit {
+impl VarBitInt {
     pub fn new (bits: u128, size: u8) -> Self {
         if size > 128 {
             panic!("Size of VarBit cannot be greater than 128 bits");
         }
-        VarBit {
+        VarBitInt {
             bits,
             size,
         }
     }
 }
 
-impl Into<i128> for VarBit {
+impl Into<i128> for VarBitInt {
     fn into(self) -> i128 {
         if self.size > 128 {
             panic!("Cannot convert a VarBit with size greater than 128 bits to i128");
@@ -30,7 +33,7 @@ impl Into<i128> for VarBit {
     }
 }
 
-impl Into<i64> for VarBit {
+impl Into<i64> for VarBitInt {
     fn into(self) -> i64 {
         if self.size > 64 {
             panic!("Cannot convert a VarBit with size greater than 64 bits to i64");
@@ -44,7 +47,7 @@ impl Into<i64> for VarBit {
     }
 }
 
-impl Into<i32> for VarBit {
+impl Into<i32> for VarBitInt {
     fn into(self) -> i32 {
         if self.size > 32 {
             panic!("Cannot convert a VarBit with size greater than 32 bits to i32");
@@ -58,7 +61,7 @@ impl Into<i32> for VarBit {
     }
 }
 
-impl Into<i16> for VarBit {
+impl Into<i16> for VarBitInt {
     fn into(self) -> i16 {
         if self.size > 16 {
             panic!("Cannot convert a VarBit with size greater than 16 bits to i16");
@@ -72,7 +75,7 @@ impl Into<i16> for VarBit {
     }
 }
 
-impl Into<i8> for VarBit {
+impl Into<i8> for VarBitInt {
     fn into(self) -> i8 {
         if self.size > 8 {
             panic!("Cannot convert a VarBit with size greater than 8 bits to i8");
@@ -86,7 +89,7 @@ impl Into<i8> for VarBit {
     }
 }
 
-impl Into<u128> for VarBit {
+impl Into<u128> for VarBitInt {
     fn into(self) -> u128 {
         if self.size > 128 {
             panic!("Cannot convert a VarBit with size greater than 128 bits to u128");
@@ -95,7 +98,7 @@ impl Into<u128> for VarBit {
     }
 }
 
-impl Into<u64> for VarBit {
+impl Into<u64> for VarBitInt {
     fn into(self) -> u64 {
         if self.size > 64 {
             panic!("Cannot convert a VarBit with size greater than 64 bits to u64");
@@ -104,7 +107,7 @@ impl Into<u64> for VarBit {
     }
 }
 
-impl Into<u32> for VarBit {
+impl Into<u32> for VarBitInt {
     fn into(self) -> u32 {
         if self.size > 32 {
             panic!("Cannot convert a VarBit with size greater than 32 bits to u32");
@@ -113,7 +116,7 @@ impl Into<u32> for VarBit {
     }
 }
 
-impl Into<u16> for VarBit {
+impl Into<u16> for VarBitInt {
     fn into(self) -> u16 {
         if self.size > 16 {
             panic!("Cannot convert a VarBit with size greater than 16 bits to u16");
@@ -122,7 +125,7 @@ impl Into<u16> for VarBit {
     }
 }
 
-impl Into<u8> for VarBit {
+impl Into<u8> for VarBitInt {
     fn into(self) -> u8 {
         if self.size > 8 {
             panic!("Cannot convert a VarBit with size greater than 8 bits to u8");
@@ -137,7 +140,7 @@ mod tests {
 
     #[test]
     fn test_varbit_into_8() {
-        let varbit_s = VarBit::new(0b00101,3);
+        let varbit_s = VarBitInt::new(0b00101,3);
 
         let u: u8 = varbit_s.into();
         assert_eq!(u, 5);
@@ -145,7 +148,7 @@ mod tests {
         let i: i8 = varbit_s.into();
         assert_eq!(i, -3);
 
-        let varbit_u = VarBit::new(0b00101,4);
+        let varbit_u = VarBitInt::new(0b00101,4);
 
         let u: u8 = varbit_u.into();
         assert_eq!(u, 5);
@@ -156,7 +159,7 @@ mod tests {
 
     #[test]
     fn test_varbit_into_16() {
-        let varbit_s = VarBit::new(0b0000_0011_1000_0101,10);
+        let varbit_s = VarBitInt::new(0b0000_0011_1000_0101,10);
 
         let u: u16 = varbit_s.into();
         assert_eq!(u, 901);
@@ -164,7 +167,7 @@ mod tests {
         let i: i16 = varbit_s.into();
         assert_eq!(i, -123);
 
-        let varbit_u = VarBit::new(0b0000_0011_1000_0101,13);
+        let varbit_u = VarBitInt::new(0b0000_0011_1000_0101,13);
 
         let u: u16 = varbit_u.into();
         assert_eq!(u, 901);
@@ -175,7 +178,7 @@ mod tests {
 
     #[test]
     fn test_varbit_into_32() {
-        let varbit_s = VarBit::new(0x5bed5ed, 27);
+        let varbit_s = VarBitInt::new(0x5bed5ed, 27);
 
         let u: u32 = varbit_s.into();
         assert_eq!(u, 96_392_685);
@@ -183,7 +186,7 @@ mod tests {
         let i: i32 = varbit_s.into();
         assert_eq!(i, -37_825_043);
 
-        let varbit_u = VarBit::new(0x5bed5ed, 28);
+        let varbit_u = VarBitInt::new(0x5bed5ed, 28);
 
         let u: u32 = varbit_u.into();
         assert_eq!(u, 96_392_685);
@@ -194,7 +197,7 @@ mod tests {
 
     #[test]
     fn test_varbit_into_64() {
-        let varbit_s = VarBit::new(0x5bed5ed2f34cdf2, 59);
+        let varbit_s = VarBitInt::new(0x5bed5ed2f34cdf2, 59);
 
         let u: u64 = varbit_s.into();
         assert_eq!(u, 414_003_430_440_619_506);
@@ -202,7 +205,7 @@ mod tests {
         let i: i64 = varbit_s.into();
         assert_eq!(i, -162_457_321_862_803_982);
 
-        let varbit_u = VarBit::new(0x5bed5ed2f34cdf2, 60);
+        let varbit_u = VarBitInt::new(0x5bed5ed2f34cdf2, 60);
 
         let u: u64 = varbit_u.into();
         assert_eq!(u, 414_003_430_440_619_506);
@@ -213,7 +216,7 @@ mod tests {
 
     #[test]
     fn test_varbit_into_128() {
-        let varbit_s = VarBit::new(0x5bed5ed2fd34cdff25fe1dc25ed3325, 123);
+        let varbit_s = VarBitInt::new(0x5bed5ed2fd34cdff25fe1dc25ed3325, 123);
 
         let u: u128 = varbit_s.into();
         assert_eq!(u, 0x5bed5ed2fd34cdff25fe1dc25ed3325);
@@ -221,7 +224,7 @@ mod tests {
         let i: i128 = varbit_s.into();
         assert_eq!(i, -0x2412A12D02CB3200DA01E23DA12CCDB);
 
-        let varbit_u = VarBit::new(0x5bed5ed2fd34cdff25fe1dc25ed3325, 124);
+        let varbit_u = VarBitInt::new(0x5bed5ed2fd34cdff25fe1dc25ed3325, 124);
 
         let u: u128 = varbit_u.into();
         assert_eq!(u, 0x5bed5ed2fd34cdff25fe1dc25ed3325);

@@ -1,3 +1,4 @@
+use crate::helpers::variable_bit_structures::VarBitInt;
 use crate::registers::Register;
 use crate::conditions::Condition;
 
@@ -16,18 +17,18 @@ pub enum DecodedInstruction32 {
         rd: u8,
         funct3: u8,
         rs1: u8,
-        imm: u16,
+        imm: VarBitInt,
     },
     SType {
         opcode: u8,
-        imm: u16,
+        imm: VarBitInt,
         funct3: u8,
         rs1: u8,
         rs2: u8,
     },
     BType {
         opcode: u8,
-        imm: u16,
+        imm: VarBitInt,
         funct3: u8,
         rs1: u8,
         rs2: u8,
@@ -35,12 +36,12 @@ pub enum DecodedInstruction32 {
     UType {
         opcode: u8,
         rd: u8,
-        imm: u32,
+        imm: VarBitInt,
     },
     JType {
         opcode: u8,
         rd: u8,
-        imm: u32
+        imm: VarBitInt
     },
 }
 
@@ -118,7 +119,7 @@ pub enum ParsedInstruction32 {
     },
     slli {
         rd: Register,
-        rs1: Register,
+        rs1: Register,/// 
         shamt: u8,
     },
     srli {
