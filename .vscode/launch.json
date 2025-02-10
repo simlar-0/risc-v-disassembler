@@ -35,6 +35,26 @@
             "args": [
                 
             ]
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Unit Test",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--",
+                    "--test-threads=1"
+                ],
+                "filter": {
+                    "name": "${selectedText}",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

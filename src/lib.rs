@@ -1,3 +1,4 @@
+mod macros;
 mod helpers;
 mod registers;
 mod conditions;
