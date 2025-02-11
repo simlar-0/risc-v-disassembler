@@ -30,6 +30,8 @@ impl ParseInstruction32 for DecodedInstruction32 {
 mod tests {
     use super::*;
     use crate::registers::Register;
+    use crate::helpers::variable_bit_structures::VarBitInt;
+
 
     #[test]
     fn test_parse_instruction32_rtype_add() {
@@ -51,26 +53,28 @@ mod tests {
 
     #[test]
     fn test_parse_instruction32_itype_addi() {
+        let imm = VarBitInt::new(0b000000000001, 12);
         let decoded = DecodedInstruction32::IType {
             opcode: 0b0010011,
             rd: 0b00001,
             funct3: 0b000,
             rs1: 0b00010,
-            imm: 0b000000000001,
+            imm: imm,
         };
         let result = decoded.parse_instruction32().unwrap();
         assert_eq!(result, ParsedInstruction32::addi {
             rd: Register::try_from(0b00001).unwrap(),
             rs1: Register::try_from(0b00010).unwrap(),
-            imm: 0b000000000001,
+            imm: i32::try_from(imm).unwrap(),
         });
     }
 
     #[test]
     fn test_parse_instruction32_stype_sb() {
+        let imm = VarBitInt::new(0b000000000001, 12);
         let decoded = DecodedInstruction32::SType {
             opcode: 0b0100011,
-            imm: 0b000000000001,
+            imm: imm,
             funct3: 0b000,
             rs1: 0b00010,
             rs2: 0b00011,
@@ -79,15 +83,16 @@ mod tests {
         assert_eq!(result, ParsedInstruction32::sb {
             rs1: Register::try_from(0b00010).unwrap(),
             rs2: Register::try_from(0b00011).unwrap(),
-            imm: 0b000000000001,
+            imm: i32::try_from(imm).unwrap(),
         });
     }
 
     #[test]
     fn test_parse_instruction32_btype_beq() {
+        let imm = VarBitInt::new(0b000000000001, 12);
         let decoded = DecodedInstruction32::BType {
             opcode: 0b1100011,
-            imm: 0b000000000001,
+            imm: imm,
             funct3: 0b000,
             rs1: 0b00010,
             rs2: 0b00011,
@@ -96,35 +101,37 @@ mod tests {
         assert_eq!(result, ParsedInstruction32::beq {
             rs1: Register::try_from(0b00010).unwrap(),
             rs2: Register::try_from(0b00011).unwrap(),
-            imm: 0b000000000001,
+            imm: i32::try_from(imm).unwrap(),
         });
     }
 
     #[test]
     fn test_parse_instruction32_utype_lui() {
+        let imm = VarBitInt::new(0b000000000001, 20);
         let decoded = DecodedInstruction32::UType {
             opcode: 0b0110111,
             rd: 0b00001,
-            imm: 0b000000000001,
+            imm: imm,
         };
         let result = decoded.parse_instruction32().unwrap();
         assert_eq!(result, ParsedInstruction32::lui {
             rd: Register::try_from(0b00001).unwrap(),
-            imm: 0b000000000001,
+            imm: i32::try_from(imm).unwrap(),
         });
     }
 
     #[test]
     fn test_parse_instruction32_jtype_jal() {
+        let imm = VarBitInt::new(0b000000000001, 20);
         let decoded = DecodedInstruction32::JType {
             opcode: 0b1101111,
             rd: 0b00001,
-            imm: 0b000000000001,
+            imm: imm,
         };
         let result = decoded.parse_instruction32().unwrap();
         assert_eq!(result, ParsedInstruction32::jal {
             rd: Register::try_from(0b00001).unwrap(),
-            imm: 0b000000000001,
+            imm: i32::try_from(imm).unwrap(),
         });
     }
 }

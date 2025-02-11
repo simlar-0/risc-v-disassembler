@@ -100,26 +100,26 @@ pub enum ParsedInstruction32 {
     addi {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     xori {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     ori {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     andi {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     slli {
         rd: Register,
-        rs1: Register,/// 
+        rs1: Register,
         shamt: u8,
     },
     srli {
@@ -135,82 +135,82 @@ pub enum ParsedInstruction32 {
     slti {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     sltiu {
         rd: Register,
         rs1: Register,
-        imm: u16,
+        imm: i32,
     },
     lb {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     lh {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     lw {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     lbu {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     lhu {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     sb {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     sh {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     sw {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     beq {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     bne {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     blt {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     bge {
         rs1: Register,
         rs2: Register,
-        imm: i16,
+        imm: i32,
     },
     bltu {
         rs1: Register,
         rs2: Register,
-        imm: u16,
+        imm: i32,
     },
     bgeu {
         rs1: Register,
         rs2: Register,
-        imm: u16,
+        imm: i32,
     },
     jal {
         rd: Register,
@@ -219,7 +219,7 @@ pub enum ParsedInstruction32 {
     jalr {
         rd: Register,
         rs1: Register,
-        imm: i16,
+        imm: i32,
     },
     lui {
         rd: Register,
