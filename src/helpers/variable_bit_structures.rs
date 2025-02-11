@@ -19,148 +19,147 @@ impl VarBitInt {
     }
 }
 
-impl TryInto<i128> for VarBitInt {
+impl TryFrom<VarBitInt> for i128 {
     type Error = &'static str;
 
-    fn try_into(self) -> Result<i128, Self::Error> {
-        if self.size > 128 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 128 {
             return Err("Cannot convert a VarBit with size greater than 128 bits to i128");
         }
-        if self.bits & (1 << self.size - 1) != 0 {
-            let mask = u128::MAX << self.size;
-            Ok((self.bits | mask) as i128)
+        if value.bits & (1 << value.size - 1) != 0 {
+            let mask = u128::MAX << value.size;
+            Ok((value.bits | mask) as i128)
         } else {
-            Ok(self.bits as i128)
+            Ok(value.bits as i128)
         } 
     }
 }
 
-impl TryInto<i64> for VarBitInt {
+impl TryFrom<VarBitInt> for i64 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<i64, Self::Error> {
-        if self.size > 64 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 64 {
             return Err("Cannot convert a VarBit with size greater than 64 bits to i64");
         }
         
-        if self.bits & (1 << (self.size - 1)) != 0 {
-            let mask = u128::MAX << self.size;
-            Ok((self.bits | mask) as i64)
+        if value.bits & (1 << (value.size - 1)) != 0 {
+            let mask = u128::MAX << value.size;
+            Ok((value.bits | mask) as i64)
         } else {
-            Ok(self.bits as i64)
+            Ok(value.bits as i64)
         }
     }
 }
 
-
-impl TryInto<i32> for VarBitInt {
+impl TryFrom<VarBitInt> for i32 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<i32, Self::Error> {
-        if self.size > 32 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 32 {
             return Err("Cannot convert a VarBit with size greater than 32 bits to i32");
         }
         
-        if self.bits & (1 << (self.size - 1)) != 0 {
-            let mask = u128::MAX << self.size;
-            Ok((self.bits | mask) as i32)
+        if value.bits & (1 << (value.size - 1)) != 0 {
+            let mask = u128::MAX << value.size;
+            Ok((value.bits | mask) as i32)
         } else {
-            Ok(self.bits as i32)
+            Ok(value.bits as i32)
         }
     }
 }
 
-impl TryInto<i16> for VarBitInt {
+impl TryFrom<VarBitInt> for i16 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<i16, Self::Error> {
-        if self.size > 16 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 16 {
             return Err("Cannot convert a VarBit with size greater than 16 bits to i16");
         }
         
-        if self.bits & (1 << (self.size - 1)) != 0 {
-            let mask = u128::MAX << self.size;
-            Ok((self.bits | mask) as i16)
+        if value.bits & (1 << (value.size - 1)) != 0 {
+            let mask = u128::MAX << value.size;
+            Ok((value.bits | mask) as i16)
         } else {
-            Ok(self.bits as i16)
+            Ok(value.bits as i16)
         }
     }
 }
 
-impl TryInto<i8> for VarBitInt {
+impl TryFrom<VarBitInt> for i8 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<i8, Self::Error> {
-        if self.size > 8 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 8 {
             return Err("Cannot convert a VarBit with size greater than 8 bits to i8");
         }
         
-        if self.bits & (1 << (self.size - 1)) != 0 {
-            let mask = u128::MAX << self.size;
-            Ok((self.bits | mask) as i8)
+        if value.bits & (1 << (value.size - 1)) != 0 {
+            let mask = u128::MAX << value.size;
+            Ok((value.bits | mask) as i8)
         } else {
-            Ok(self.bits as i8)
+            Ok(value.bits as i8)
         }
     }
 }
 
-impl TryInto<u128> for VarBitInt {
+impl TryFrom<VarBitInt> for u128 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<u128, Self::Error> {
-        if self.size > 128 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 128 {
             return Err("Cannot convert a VarBit with size greater than 128 bits to u128");
         }
         
-        Ok(self.bits)
+        Ok(value.bits)
     }
 }
 
-impl TryInto<u64> for VarBitInt {
+impl TryFrom<VarBitInt> for u64 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<u64, Self::Error> {
-        if self.size > 64 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 64 {
             return Err("Cannot convert a VarBit with size greater than 64 bits to u64");
         }
         
-        Ok(self.bits as u64)
+        Ok(value.bits as u64)
     }
 }
 
-impl TryInto<u32> for VarBitInt {
+impl TryFrom<VarBitInt> for u32 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<u32, Self::Error> {
-        if self.size > 32 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 32 {
             return Err("Cannot convert a VarBit with size greater than 32 bits to u32");
         }
         
-        Ok(self.bits as u32)
+        Ok(value.bits as u32)
     }
 }
 
-impl TryInto<u16> for VarBitInt {
+impl TryFrom<VarBitInt> for u16 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<u16, Self::Error> {
-        if self.size > 16 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 16 {
             return Err("Cannot convert a VarBit with size greater than 16 bits to u16");
         }
         
-        Ok(self.bits as u16)
+        Ok(value.bits as u16)
     }
 }
 
-impl TryInto<u8> for VarBitInt {
+impl TryFrom<VarBitInt> for u8 {
     type Error = &'static str;
     
-    fn try_into(self) -> Result<u8, Self::Error> {
-        if self.size > 8 {
+    fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
+        if value.size > 8 {
             return Err("Cannot convert a VarBit with size greater than 8 bits to u8");
         }
         
-        Ok(self.bits as u8)
+        Ok(value.bits as u8)
     }
 }
 
