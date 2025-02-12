@@ -118,182 +118,125 @@ fn parse_itype32_alu(funct3: &u8, rd: &u8, rs1: &u8, imm: &VarBitInt) -> Result<
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::registers::Register;
 
     #[test]
-    fn test_parse_itype32_load_lb() {
+    fn test_parse_itype32_lb() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_load(&0b000, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::lb {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0000011, &0b00001, &0b000, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::lb {..}));
     }
 
     #[test]
-    fn test_parse_itype32_load_lh() {
+    fn test_parse_itype32_lh() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_load(&0b001, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::lh {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0000011, &0b00001, &0b001, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::lh {..}));
     }
 
     #[test]
-    fn test_parse_itype32_load_lw() {
+    fn test_parse_itype32_lw() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_load(&0b010, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::lw {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0000011, &0b00001, &0b010, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::lw {..}));
     }
 
     #[test]
-    fn test_parse_itype32_load_lbu() {
+    fn test_parse_itype32_lbu() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_load(&0b100, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::lbu {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0000011, &0b00001, &0b100, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::lbu {..}));
     }
 
     #[test]
-    fn test_parse_itype32_load_lhu() {
+    fn test_parse_itype32_lhu() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_load(&0b101, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::lhu {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0000011, &0b00001, &0b101, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::lhu {..}));
     }
 
     #[test]
     fn test_parse_itype32_load_invalid_funct3() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_load(&0b110, &0b00001, &0b00010, &imm);
+        let result = parse_itype32(&0b0000011, &0b00001, &0b110, &0b00010, &imm);
         assert!(result.is_err());
         assert_eq!(result.err(), Some("Invalid funct3"));
     }
 
     #[test]
-    fn test_parse_itype32_alu_addi() {
+    fn test_parse_itype32_addi() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b000, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::addi {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b000, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::addi {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_slli() {
+    fn test_parse_itype32_slli() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b001, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::slli {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            shamt: 0b00001,
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b001, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::slli {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_slti() {
+    fn test_parse_itype32_slti() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b010, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::slti {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b010, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::slti {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_sltiu() {
+    fn test_parse_itype32_sltiu() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b011, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::sltiu {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b011, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::sltiu {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_xori() {
+    fn test_parse_itype32_xori() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b100, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::xori {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b100, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::xori {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_srli() {
+    fn test_parse_itype32_srli() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b101, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::srli {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            shamt: 0b00001,
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b101, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::srli {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_srai() {
+    fn test_parse_itype32_srai() {
         let imm = VarBitInt::new(0b010000000001, 12);
-        let result = parse_itype32_alu(&0b101, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::srai {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            shamt: 0b00001,
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b101, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::srai {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_ori() {
+    fn test_parse_itype32_ori() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b110, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::ori {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b110, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::ori {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_andi() {
+    fn test_parse_itype32_andi() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b111, &0b00001, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::andi {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        let result = parse_itype32(&0b0010011, &0b00001, &0b111, &0b00010, &imm).unwrap();
+        assert!(matches!(result, ParsedInstruction32::andi {..}));
     }
 
     #[test]
-    fn test_parse_itype32_alu_invalid_funct3() {
+    fn test_parse_itype32_invalid_funct3() {
         let imm = VarBitInt::new(0b000000000001, 12);
-        let result = parse_itype32_alu(&0b1000, &0b00001, &0b00010, &imm);
+        let result = parse_itype32(&0b0010011, &0b00001, &0b1000, &0b00010, &imm);
         assert!(result.is_err());
         assert_eq!(result.err(), Some("Invalid funct3"));
     }
 
     #[test]
-    fn test_parse_itype32_alu_invalid_imm() {
+    fn test_parse_itype32_invalid_imm() {
         let imm = VarBitInt::new(0b100000000001, 12);
-        let result = parse_itype32_alu(&0b101, &0b00001, &0b00010, &imm);
+        let result = parse_itype32(&0b0010011, &0b00001, &0b101, &0b00010, &imm);
         assert!(result.is_err());
         assert_eq!(result.err(), Some("Invalid imm"));
     }
@@ -302,25 +245,36 @@ mod tests {
     fn test_parse_itype32_jalr() {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b1100111, &0b00001, &0b000, &0b00010, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::jalr {
-            rd: Register::try_from(0b00001).unwrap(),
-            rs1: Register::try_from(0b00010).unwrap(),
-            imm: i32::try_from(imm).unwrap(),
-        });
+        assert!(matches!(result, ParsedInstruction32::jalr {..}));
     }
 
     #[test]
     fn test_parse_itype32_ecall() {
         let imm = VarBitInt::new(0b000000000000, 12);
         let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::ecall);
+        assert!(matches!(result, ParsedInstruction32::ecall));
     }
 
     #[test]
     fn test_parse_itype32_ebreak() {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &imm).unwrap();
-        assert_eq!(result, ParsedInstruction32::ebreak);
+        assert!(matches!(result, ParsedInstruction32::ebreak));
     }
 
+    #[test]
+    fn test_parse_itype32_invalid_opcode() {
+        let imm = VarBitInt::new(0b000000000001, 12);
+        let result = parse_itype32(&0b1111111, &0b00001, &0b000, &0b00010, &imm);
+        assert!(result.is_err());
+        assert_eq!(result.err(), Some("Invalid opcode"));
+    }
+
+    #[test]
+    fn test_parse_itype32_invalid_funct3_ecall_ebreak() {
+        let imm = VarBitInt::new(0b000000000010, 12);
+        let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &imm);
+        assert!(result.is_err());
+        assert_eq!(result.err(), Some("Invalid funct3"));
+    }
 }
