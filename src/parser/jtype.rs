@@ -4,11 +4,11 @@ use crate::helpers::variable_bit_structures::VarBitInt;
 
 pub(crate) fn parse_jtype32(opcode: &u8, rd: &u8, imm: &VarBitInt) -> Result<ParsedInstruction32, &'static str> {
     let imm = i32::try_from(*imm)?;
+    let rd = Register::try_from(*rd)?;
+
+
     match opcode {
-        0b1101111 => Ok(ParsedInstruction32::jal {
-            rd: Register::try_from(*rd)?,
-            imm: imm,
-        }),
+        0b1101111 => Ok(ParsedInstruction32::jal { rd, imm}),
         _ => Err("Invalid opcode"),
     }
 }

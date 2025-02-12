@@ -3,15 +3,12 @@ use crate::registers::Register;
 use crate::helpers::variable_bit_structures::VarBitInt;
 
 pub(crate) fn parse_utype32(opcode: &u8, rd: &u8, imm: &VarBitInt) -> Result<ParsedInstruction32, &'static str> {
+    let imm = i32::try_from(*imm)?;
+    let rd = Register::try_from(*rd)?;
+    
     match opcode {
-        0b0110111 => Ok(ParsedInstruction32::lui {
-            rd: Register::try_from(*rd)?,
-            imm: i32::try_from(*imm)?,
-        }),
-        0b0010111 => Ok(ParsedInstruction32::auipc {
-            rd: Register::try_from(*rd)?,
-            imm: i32::try_from(*imm)?,
-        }),
+        0b0110111 => Ok(ParsedInstruction32::lui { rd, imm }),
+        0b0010111 => Ok(ParsedInstruction32::auipc { rd, imm }),
         _ => Err("Invalid opcode"),
     }
 }
