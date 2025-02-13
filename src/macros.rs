@@ -14,6 +14,8 @@
 /// # Examples
 /// 
 /// ```
+/// use risc_v_disassembler::extract_bits;
+/// 
 /// let number: u32 = 0b1111_1111_1001_1111_1111_1111_1111_1010;
 /// let result = extract_bits!(number, 0, 3);
 /// assert_eq!(result, Ok(0b1010));
@@ -21,6 +23,7 @@
 /// let result = extract_bits!(number, 4, 7);
 /// assert_eq!(result, Ok(0b1111));
 /// ```
+#[macro_export]
 macro_rules! extract_bits {
     ($num:expr, $start:expr, $end:expr) => {{
         let bit_size = std::mem::size_of_val(&$num) * 8;
