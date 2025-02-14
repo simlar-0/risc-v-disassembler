@@ -1,4 +1,5 @@
 use crate::instructions::{DecodedInstruction32, ParseInstruction32, ParsedInstruction32};
+use crate::DisassemblerError;
 use crate::parser::rtype::parse_rtype32;
 use crate::parser::itype::parse_itype32;
 use crate::parser::stype::parse_stype32;
@@ -8,7 +9,7 @@ use crate::parser::jtype::parse_jtype32;
 
 
 impl ParseInstruction32 for DecodedInstruction32 {
-    fn parse_instruction32(&self) -> Result<ParsedInstruction32, &'static str> {
+    fn parse_instruction32(&self) -> Result<ParsedInstruction32, DisassemblerError> {
         match self {
             DecodedInstruction32::RType { opcode, rd, funct3, rs1, rs2, funct7 } => 
                 parse_rtype32(opcode, rd, funct3, rs1, rs2, funct7),
