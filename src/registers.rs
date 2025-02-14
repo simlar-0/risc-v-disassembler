@@ -1,3 +1,5 @@
+use crate::DisassemblerError;
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 #[repr(u8)]
 #[allow(non_camel_case_types)]
@@ -37,7 +39,7 @@ pub enum Register {
 }
 
 impl TryFrom<u8> for Register {
-    type Error = &'static str;
+    type Error = DisassemblerError;
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
         match value {
@@ -73,7 +75,7 @@ impl TryFrom<u8> for Register {
             29 => Ok(Register::x29),
             30 => Ok(Register::x30),
             31 => Ok(Register::x31),
-            _ => Err("Invalid register"),
+            _ => Err(DisassemblerError::InvalidRegister(value)),
         }
     }
 }
@@ -87,13 +89,13 @@ pub enum SpecialRegister {
 }
 
 impl TryFrom<u8> for SpecialRegister {
-    type Error = &'static str;
+    type Error = DisassemblerError;
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
         match value {
             0 => Ok(SpecialRegister::XLEN),
             1 => Ok(SpecialRegister::pc),
-            _ => Err("Invalid special register"),
+            _ => Err(DisassemblerError::InvalidRegister(value)),
         }
     }
 }

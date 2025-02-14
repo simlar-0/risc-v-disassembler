@@ -2,8 +2,9 @@ use crate::helpers::variable_bit_structures::VarBitInt;
 use crate::instructions::ParsedInstruction32;
 use crate::registers::Register;
 use crate::macros::extract_bits;
+use crate::DisassemblerError;
 
-pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &VarBitInt) -> Result<ParsedInstruction32, &'static str> {
+pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &VarBitInt) -> Result<ParsedInstruction32, DisassemblerError> {
     let imm = i32::try_from(*imm)?;
     let rd = Register::try_from(*rd)?;
     let rs1 = Register::try_from(*rs1)?;
@@ -16,25 +17,25 @@ pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &V
             match imm {
                 0b000000000000 => Ok(ParsedInstruction32::ecall),
                 0b000000000001 => Ok(ParsedInstruction32::ebreak),
-                _ => Err("Invalid funct3"),
+                _ => Err(DisassemblerError::InvalidImmediate(imm)),
             }
         },
-        _ => Err("Invalid opcode"),
+        _ => Err(DisassemblerError::InvalidField(*opcode, "opcode")),
     }
 }
 
-fn parse_itype32_load(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Result<ParsedInstruction32, &'static str> {
+fn parse_itype32_load(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Result<ParsedInstruction32, DisassemblerError> {
     match funct3 {
         0b000 => Ok(ParsedInstruction32::lb { rd, rs1, imm }),
         0b001 => Ok(ParsedInstruction32::lh { rd, rs1, imm }),
         0b010 => Ok(ParsedInstruction32::lw { rd, rs1, imm }),
         0b100 => Ok(ParsedInstruction32::lbu { rd, rs1, imm }),
         0b101 => Ok(ParsedInstruction32::lhu { rd, rs1, imm }),
-        _ => Err("Invalid funct3"),
+        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
     }
 }
 
-fn parse_itype32_alu(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Result<ParsedInstruction32, &'static str> {
+fn parse_itype32_alu(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Result<ParsedInstruction32, DisassemblerError> {
     let imm_upper_bits = extract_bits!(imm, 5, 11)?;
     let shamt = extract_bits!(imm, 0, 4)? as u8;
 
@@ -47,11 +48,11 @@ fn parse_itype32_alu(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Resu
         0b101 => match imm_upper_bits {
             0b0000000 => Ok(ParsedInstruction32::srli { rd, rs1, shamt }),
             0b0100000 => Ok(ParsedInstruction32::srai { rd, rs1, shamt }),
-            _ => Err("Invalid imm"),
+            _ => Err(DisassemblerError::InvalidImmediate(imm)),
         },
         0b110 => Ok(ParsedInstruction32::ori { rd, rs1, imm }),
         0b111 => Ok(ParsedInstruction32::andi { rd, rs1, imm }),
-        _ => Err("Invalid funct3"),
+        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
     }
 }
 
@@ -100,7 +101,7 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b0000011, &0b00001, &0b110, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some("Invalid funct3"));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b110, "funct3")));
     }
 
     #[test]
@@ -171,15 +172,16 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b0010011, &0b00001, &0b1000, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some("Invalid funct3"));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b1000, "funct3")));
     }
 
     #[test]
     fn test_parse_itype32_invalid_imm() {
         let imm = VarBitInt::new(0b100000000001, 12);
+        let exp_imm:i32 = -2047;
         let result = parse_itype32(&0b0010011, &0b00001, &0b101, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some("Invalid imm"));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidImmediate(exp_imm)));
     }
 
     #[test]
@@ -208,7 +210,7 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b1111111, &0b00001, &0b000, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some("Invalid opcode"));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b1111111, "opcode")));
     }
 
     #[test]
@@ -216,6 +218,6 @@ mod tests {
         let imm = VarBitInt::new(0b000000000010, 12);
         let result = parse_itype32(&0b1110011, &0b00000, &0b000, &0b00000, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some("Invalid funct3"));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidImmediate(0b000000000010)));
     }
 }

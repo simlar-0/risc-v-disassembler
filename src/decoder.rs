@@ -1,10 +1,10 @@
 use crate::macros::extract_bits;
 use crate::instructions::{DecodedInstruction32, DecodeInstruction32, Instruction32};
-use crate::Error;
+use crate::DisassemblerError;
 use crate::helpers::variable_bit_structures::VarBitInt;
 
 impl DecodeInstruction32 for Instruction32 {
-    fn decode_instruction32(&self) -> Result<DecodedInstruction32, Error> {
+    fn decode_instruction32(&self) -> Result<DecodedInstruction32, DisassemblerError> {
         let opcode = extract_bits!(*self, 0, 6)?;
         let decoded = match opcode {
             0b0110011 => decode_rtype32(*self)?,
@@ -13,13 +13,13 @@ impl DecodeInstruction32 for Instruction32 {
             0b1100011 => decode_btype32(*self)?,
             0b0110111 | 0b0010111 => decode_utype32(*self)?,
             0b1101111 => decode_jtype32(*self)?,
-            _ => return Err(Error::InvalidOpcode(opcode as u8)),
+            _ => return Err(DisassemblerError::InvalidField(opcode as u8, "opcode")),
         };
         Ok(decoded)
     }
 }
 
-fn decode_rtype32(instruction: Instruction32) -> Result<DecodedInstruction32, Error> {
+fn decode_rtype32(instruction: Instruction32) -> Result<DecodedInstruction32, DisassemblerError> {
     let opcode = extract_bits!(instruction, 0, 6)? as u8;
     let rd = extract_bits!(instruction, 7, 11)? as u8;
     let funct3 = extract_bits!(instruction, 12, 14)? as u8;
@@ -36,7 +36,7 @@ fn decode_rtype32(instruction: Instruction32) -> Result<DecodedInstruction32, Er
     })
 }
 
-fn decode_itype32(instruction: Instruction32) -> Result<DecodedInstruction32, Error> {
+fn decode_itype32(instruction: Instruction32) -> Result<DecodedInstruction32, DisassemblerError> {
     let opcode = extract_bits!(instruction, 0, 6)? as u8;
     let rd = extract_bits!(instruction, 7, 11)? as u8;
     let funct3 = extract_bits!(instruction, 12, 14)? as u8;
@@ -52,7 +52,7 @@ fn decode_itype32(instruction: Instruction32) -> Result<DecodedInstruction32, Er
     })
 }
 
-fn decode_stype32(instruction: Instruction32) -> Result<DecodedInstruction32, Error> {
+fn decode_stype32(instruction: Instruction32) -> Result<DecodedInstruction32, DisassemblerError> {
     let opcode = extract_bits!(instruction, 0, 6)? as u8;
     let imm4_0 = extract_bits!(instruction, 7, 11)? as u16;
     let funct3 = extract_bits!(instruction, 12, 14)? as u8;
@@ -71,7 +71,7 @@ fn decode_stype32(instruction: Instruction32) -> Result<DecodedInstruction32, Er
     })
 }
 
-fn decode_btype32(instruction: Instruction32) -> Result<DecodedInstruction32, Error> {
+fn decode_btype32(instruction: Instruction32) -> Result<DecodedInstruction32, DisassemblerError> {
     let opcode = extract_bits!(instruction, 0, 6)? as u8;
     let imm11 = extract_bits!(instruction, 7, 7)? as u16;
     let imm4_1 = extract_bits!(instruction, 8, 11)? as u16;
@@ -93,7 +93,7 @@ fn decode_btype32(instruction: Instruction32) -> Result<DecodedInstruction32, Er
     })
 }
 
-fn decode_utype32(instruction: Instruction32) -> Result<DecodedInstruction32, Error> {
+fn decode_utype32(instruction: Instruction32) -> Result<DecodedInstruction32, DisassemblerError> {
     let opcode = extract_bits!(instruction, 0, 6)? as u8;
     let rd = extract_bits!(instruction, 7, 11)? as u8;
     let imm_bits = extract_bits!(instruction, 12, 31)? as u32;
@@ -106,7 +106,7 @@ fn decode_utype32(instruction: Instruction32) -> Result<DecodedInstruction32, Er
     })
 }
 
-fn decode_jtype32(instruction: Instruction32) -> Result<DecodedInstruction32, Error> {
+fn decode_jtype32(instruction: Instruction32) -> Result<DecodedInstruction32, DisassemblerError> {
     let opcode = extract_bits!(instruction, 0, 6)? as u8;
     let rd = extract_bits!(instruction, 7, 11)? as u8;
     let imm19_12 = extract_bits!(instruction, 12, 19)? as u32;
