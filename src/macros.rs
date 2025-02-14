@@ -28,9 +28,9 @@ macro_rules! extract_bits {
     ($num:expr, $start:expr, $end:expr) => {{
         let bit_size = std::mem::size_of_val(&$num) * 8;
         if $start <0 || $end >= bit_size {
-            Err(crate::DisassemblerError::BitExtractionError("Index out of bounds"))
+            Err($crate::DisassemblerError::BitExtractionError("Index out of bounds"))
         } else if $start > $end {
-            Err(crate::DisassemblerError::BitExtractionError("Start index must be less than or equal to end index"))
+            Err($crate::DisassemblerError::BitExtractionError("Start index must be less than or equal to end index"))
         } else {
             let mask = (1 << ($end - $start + 1)) - 1;
             Ok(($num >> $start) & mask)
