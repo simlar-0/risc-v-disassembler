@@ -1,10 +1,19 @@
 //! A simple disassembler for the RISC-V instruction set architecture.
 //! It currently supports RV32I instructions only.
 //! 
-//! The disassembler takes a byte array of 4 bytes and returns a parsed 
-//! instruction in the form of a ParsedInstruction32 enum.
 //! 
-//! # Example
+//! Parses a 4-byte array into a `ParsedInstruction32` enum representing a RISC-V instruction.
+//! 
+//! ### Arguments
+//! 
+//! * `bytes` - A slice of 4 bytes representing the encoded instruction to be parsed.
+//! 
+//! ### Returns
+//! 
+//! * `Ok(ParsedInstruction32)` - If the parsing is successful, returns the parsed instruction.
+//! * `Err(DisassemblerError)` - If the parsing fails, returns an error indicating the reason for failure.
+//! 
+//! ### Example
 //! 
 //! ```
 //! use risc_v_disassembler::{parse, ParsedInstruction32, Register};
