@@ -1,3 +1,5 @@
+use crate::DisassemblerError;
+
 /// Represents an integer with a variable number of bits, 
 /// which can be interpreted as both signed and unsigned.
 /// 
@@ -20,11 +22,11 @@ impl VarBitInt {
 }
 
 impl TryFrom<VarBitInt> for i128 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
 
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 128 {
-            return Err("Cannot convert a VarBit with size greater than 128 bits to i128");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "i128"));
         }
         if value.bits & (1 << value.size - 1) != 0 {
             let mask = u128::MAX << value.size;
@@ -36,11 +38,11 @@ impl TryFrom<VarBitInt> for i128 {
 }
 
 impl TryFrom<VarBitInt> for i64 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 64 {
-            return Err("Cannot convert a VarBit with size greater than 64 bits to i64");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "i64"));
         }
         
         if value.bits & (1 << (value.size - 1)) != 0 {
@@ -53,11 +55,11 @@ impl TryFrom<VarBitInt> for i64 {
 }
 
 impl TryFrom<VarBitInt> for i32 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 32 {
-            return Err("Cannot convert a VarBit with size greater than 32 bits to i32");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "i32"));
         }
         
         if value.bits & (1 << (value.size - 1)) != 0 {
@@ -70,11 +72,11 @@ impl TryFrom<VarBitInt> for i32 {
 }
 
 impl TryFrom<VarBitInt> for i16 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 16 {
-            return Err("Cannot convert a VarBit with size greater than 16 bits to i16");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "i16"));
         }
         
         if value.bits & (1 << (value.size - 1)) != 0 {
@@ -87,11 +89,11 @@ impl TryFrom<VarBitInt> for i16 {
 }
 
 impl TryFrom<VarBitInt> for i8 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 8 {
-            return Err("Cannot convert a VarBit with size greater than 8 bits to i8");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "i8"));
         }
         
         if value.bits & (1 << (value.size - 1)) != 0 {
@@ -104,11 +106,11 @@ impl TryFrom<VarBitInt> for i8 {
 }
 
 impl TryFrom<VarBitInt> for u128 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 128 {
-            return Err("Cannot convert a VarBit with size greater than 128 bits to u128");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "u128"));
         }
         
         Ok(value.bits)
@@ -116,11 +118,11 @@ impl TryFrom<VarBitInt> for u128 {
 }
 
 impl TryFrom<VarBitInt> for u64 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 64 {
-            return Err("Cannot convert a VarBit with size greater than 64 bits to u64");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "u64"));
         }
         
         Ok(value.bits as u64)
@@ -128,11 +130,11 @@ impl TryFrom<VarBitInt> for u64 {
 }
 
 impl TryFrom<VarBitInt> for u32 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 32 {
-            return Err("Cannot convert a VarBit with size greater than 32 bits to u32");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "u32"));
         }
         
         Ok(value.bits as u32)
@@ -140,11 +142,11 @@ impl TryFrom<VarBitInt> for u32 {
 }
 
 impl TryFrom<VarBitInt> for u16 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 16 {
-            return Err("Cannot convert a VarBit with size greater than 16 bits to u16");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "u16"));
         }
         
         Ok(value.bits as u16)
@@ -152,11 +154,11 @@ impl TryFrom<VarBitInt> for u16 {
 }
 
 impl TryFrom<VarBitInt> for u8 {
-    type Error = &'static str;
+    type Error = DisassemblerError;
     
     fn try_from(value: VarBitInt) -> Result<Self, Self::Error> {
         if value.size > 8 {
-            return Err("Cannot convert a VarBit with size greater than 8 bits to u8");
+            return Err(DisassemblerError::VarBitSizeExceeded(value.size, "u8"));
         }
         
         Ok(value.bits as u8)
