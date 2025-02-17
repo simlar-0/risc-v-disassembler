@@ -26,39 +26,39 @@ mod tests {
             (0x00A54513, ParsedInstruction32::xori { rd: Register::x10, rs1: Register::x10, imm: 10 }),
             (0x00A56513, ParsedInstruction32::ori { rd: Register::x10, rs1: Register::x10, imm: 10 }),
             (0x00A57513, ParsedInstruction32::andi { rd: Register::x10, rs1: Register::x10, imm: 10 }),
-            (0x00051513, ParsedInstruction32::slli { rd: Register::x10, rs1: Register::x10, shamt: 0 }),
-            (0x00055513, ParsedInstruction32::srli { rd: Register::x10, rs1: Register::x10, shamt: 0 }),
-            (0x40055513, ParsedInstruction32::srai { rd: Register::x10, rs1: Register::x10, shamt: 0 }),
+            (0x00451513, ParsedInstruction32::slli { rd: Register::x10, rs1: Register::x10, shamt: 4 }),
+            (0x00455513, ParsedInstruction32::srli { rd: Register::x10, rs1: Register::x10, shamt: 4 }),
+            (0x40455513, ParsedInstruction32::srai { rd: Register::x10, rs1: Register::x10, shamt: 4 }),
 
             // Load instructions
-            (0x00052503, ParsedInstruction32::lw { rd: Register::x10, rs1: Register::x10, imm: 0 }),
-            (0x00051503, ParsedInstruction32::lh { rd: Register::x10, rs1: Register::x10, imm: 0 }),
-            (0x00050503, ParsedInstruction32::lb { rd: Register::x10, rs1: Register::x10, imm: 0 }),
-            (0x00055503, ParsedInstruction32::lhu { rd: Register::x10, rs1: Register::x10, imm: 0 }),
-            (0x00054503, ParsedInstruction32::lbu { rd: Register::x10, rs1: Register::x10, imm: 0 }),
+            (0x00A50503, ParsedInstruction32::lb { rd: Register::x10, rs1: Register::x10, imm: 10 }),
+            (0x00A51503, ParsedInstruction32::lh { rd: Register::x10, rs1: Register::x10, imm: 10 }),
+            (0x00A52503, ParsedInstruction32::lw { rd: Register::x10, rs1: Register::x10, imm: 10 }),
+            (0x00A54503, ParsedInstruction32::lbu { rd: Register::x10, rs1: Register::x10, imm: 10 }),
+            (0x00A55503, ParsedInstruction32::lhu { rd: Register::x10, rs1: Register::x10, imm: 10 }),
 
             // S-type instructions
-            (0x00A52023, ParsedInstruction32::sw { rs1: Register::x10, rs2: Register::x10, imm: 0 }),
-            (0x00A51023, ParsedInstruction32::sh { rs1: Register::x10, rs2: Register::x10, imm: 0 }),
-            (0x00A50023, ParsedInstruction32::sb { rs1: Register::x10, rs2: Register::x10, imm: 0 }),
+            (0x00A50523, ParsedInstruction32::sb { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00A51523, ParsedInstruction32::sh { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00A52523, ParsedInstruction32::sw { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
 
             // B-type instructions
-            (0x00B50063, ParsedInstruction32::beq { rs1: Register::x10, rs2: Register::x11, imm: 0 }),
-            (0x00B51063, ParsedInstruction32::bne { rs1: Register::x10, rs2: Register::x11, imm: 0 }),
-            (0x00B54063, ParsedInstruction32::blt { rs1: Register::x10, rs2: Register::x11, imm: 0 }),
-            (0x00B55063, ParsedInstruction32::bge { rs1: Register::x10, rs2: Register::x11, imm: 0 }),
-            (0x00B56063, ParsedInstruction32::bltu { rs1: Register::x10, rs2: Register::x11, imm: 0 }),
-            (0x00B57063, ParsedInstruction32::bgeu { rs1: Register::x10, rs2: Register::x11, imm: 0 }),
+            (0x00a50563, ParsedInstruction32::beq { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00a51563, ParsedInstruction32::bne { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00a54563, ParsedInstruction32::blt { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00a55563, ParsedInstruction32::bge { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00a56563, ParsedInstruction32::bltu { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
+            (0x00a57563, ParsedInstruction32::bgeu { rs1: Register::x10, rs2: Register::x10, imm: 10 }),
 
             // J-type instruction
-            (0x000000EF, ParsedInstruction32::jal { rd: Register::x1, imm: 0 }),
+            (0x010000EF, ParsedInstruction32::jal { rd: Register::x1, imm: 16 }),
 
             // U-type instructions
-            (0x00000537, ParsedInstruction32::lui { rd: Register::x10, imm: 0 }),
-            (0x00000517, ParsedInstruction32::auipc { rd: Register::x10, imm: 0 }),
+            (0x000100b7, ParsedInstruction32::lui { rd: Register::x1, imm: 16 }),
+            (0x00010097, ParsedInstruction32::auipc { rd: Register::x1, imm: 16 }),
 
             // I-type jump instruction
-            (0x000500E7, ParsedInstruction32::jalr { rd: Register::x1, rs1: Register::x10, imm: 0 }),
+            (0x00A500E7, ParsedInstruction32::jalr { rd: Register::x1, rs1: Register::x10, imm: 10 }),
         ]
     }
 
