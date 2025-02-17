@@ -20,7 +20,7 @@ pub(crate) fn parse_itype32(opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, imm: &V
                 _ => Err(DisassemblerError::InvalidImmediate(imm)),
             }
         },
-        _ => Err(DisassemblerError::InvalidField(*opcode, "opcode")),
+        _ => Err(DisassemblerError::InvalidOpcode(*opcode)),
     }
 }
 
@@ -31,7 +31,7 @@ fn parse_itype32_load(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Res
         0b010 => Ok(ParsedInstruction32::lw { rd, rs1, imm }),
         0b100 => Ok(ParsedInstruction32::lbu { rd, rs1, imm }),
         0b101 => Ok(ParsedInstruction32::lhu { rd, rs1, imm }),
-        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
+        _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }
 
@@ -52,7 +52,7 @@ fn parse_itype32_alu(funct3: &u8, rd: Register, rs1: Register, imm: i32) -> Resu
         },
         0b110 => Ok(ParsedInstruction32::ori { rd, rs1, imm }),
         0b111 => Ok(ParsedInstruction32::andi { rd, rs1, imm }),
-        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
+        _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }
 
@@ -101,7 +101,7 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b0000011, &0b00001, &0b110, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b110, "funct3")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct3(0b110)));
     }
 
     #[test]
@@ -172,7 +172,7 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b0010011, &0b00001, &0b1000, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b1000, "funct3")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct3(0b1000)));
     }
 
     #[test]
@@ -210,7 +210,7 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_itype32(&0b1111111, &0b00001, &0b000, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b1111111, "opcode")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidOpcode(0b1111111)));
     }
 
     #[test]

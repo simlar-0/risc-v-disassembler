@@ -15,7 +15,7 @@ pub(crate) fn parse_btype32(_opcode: &u8, imm: &VarBitInt, funct3: &u8, rs1: &u8
         0b101 => Ok(ParsedInstruction32::bge { rs1, rs2, imm }),
         0b110 => Ok(ParsedInstruction32::bltu { rs1, rs2, imm }),
         0b111 => Ok(ParsedInstruction32::bgeu { rs1, rs2, imm }),
-        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
+        _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }
 #[cfg(test)]
@@ -42,7 +42,7 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_btype32(&0b1100011, &imm, &0b010, &0b00010, &0b00011);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b010, "funct3")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct3(0b010)));
     }
 
     #[test]

@@ -11,7 +11,7 @@ pub(crate) fn parse_rtype32(_opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, rs2: &
         0b000 => match funct7 {
             0b0000000 => Ok(ParsedInstruction32::add { rd, rs1, rs2 }),
             0b0100000 => Ok(ParsedInstruction32::sub { rd, rs1, rs2 }),
-            _ => Err(DisassemblerError::InvalidField(*funct7, "funct7")),
+            _ => Err(DisassemblerError::InvalidFunct7(*funct7)),
         },
         0b001 => Ok(ParsedInstruction32::sll { rd, rs1, rs2 }),
         0b010 => Ok(ParsedInstruction32::slt { rd, rs1, rs2 }),
@@ -20,11 +20,11 @@ pub(crate) fn parse_rtype32(_opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, rs2: &
         0b101 => match funct7 {
             0b0000000 => Ok(ParsedInstruction32::srl { rd, rs1, rs2 }),
             0b0100000 => Ok(ParsedInstruction32::sra { rd, rs1, rs2 }),
-            _ => Err(DisassemblerError::InvalidField(*funct7, "funct7")),
+            _ => Err(DisassemblerError::InvalidFunct7(*funct7)),
         },
         0b110 => Ok(ParsedInstruction32::or { rd, rs1, rs2 }),
         0b111 => Ok(ParsedInstruction32::and { rd, rs1, rs2 }),
-        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
+        _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }
 
@@ -96,20 +96,20 @@ mod tests {
     fn test_parse_rtype32_invalid_funct3() {
         let result = parse_rtype32(&0b00000000, &0b00000001, &0b1000, &0b00000010, &0b00000011, &0b0000000);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b1000, "funct3")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct3(0b1000)));
     }
 
     #[test]
     fn test_parse_rtype32_invalid_funct7() {
         let result = parse_rtype32(&0b00000000, &0b00000001, &0b000, &0b00000010, &0b00000011, &0b1000000);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b1000000, "funct7")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct7(0b1000000)));
     }
 
     #[test]
     fn test_parse_rtype32_invalid_funct7_for_funct3_101() {
         let result = parse_rtype32(&0b00000000, &0b00000001, &0b101, &0b00000010, &0b00000011, &0b0010000);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b0010000, "funct7")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct7(0b0010000)));
     }
 }

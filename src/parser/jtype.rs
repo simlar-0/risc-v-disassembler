@@ -10,7 +10,7 @@ pub(crate) fn parse_jtype32(opcode: &u8, rd: &u8, imm: &VarBitInt) -> Result<Par
 
     match opcode {
         0b1101111 => Ok(ParsedInstruction32::jal { rd, imm}),
-        _ => Err(DisassemblerError::InvalidField(*opcode, "opcode")),
+        _ => Err(DisassemblerError::InvalidOpcode(*opcode)),
     }
 }
 
@@ -31,6 +31,6 @@ mod tests {
         let imm = VarBitInt::new(0b00000000000000000000000000000001, 20);
         let result = parse_jtype32(&0b0000000, &0b00010, &imm);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b0000000, "opcode")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidOpcode(0b0000000)));
     }
 }

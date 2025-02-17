@@ -12,7 +12,7 @@ pub(crate) fn parse_stype32(_opcode: &u8, imm: &VarBitInt, funct3: &u8, rs1: &u8
         0b000 => Ok(ParsedInstruction32::sb { rs1, rs2, imm }),
         0b001 => Ok(ParsedInstruction32::sh { rs1, rs2, imm }),
         0b010 => Ok(ParsedInstruction32::sw { rs1, rs2, imm }),
-        _ => Err(DisassemblerError::InvalidField(*funct3, "funct3")),
+        _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }
 
@@ -46,6 +46,6 @@ mod tests {
         let imm = VarBitInt::new(0b000000000001, 12);
         let result = parse_stype32(&0b0100011, &imm, &0b011, &0b00010, &0b00011);
         assert!(result.is_err());
-        assert_eq!(result.err(), Some(DisassemblerError::InvalidField(0b011, "funct3")));
+        assert_eq!(result.err(), Some(DisassemblerError::InvalidFunct3(0b011)));
     }
 }

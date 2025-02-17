@@ -13,7 +13,7 @@ impl DecodeInstruction32 for Instruction32 {
             0b1100011 => decode_btype32(*self)?,
             0b0110111 | 0b0010111 => decode_utype32(*self)?,
             0b1101111 => decode_jtype32(*self)?,
-            _ => return Err(DisassemblerError::InvalidField(opcode as u8, "opcode")),
+            _ => return Err(DisassemblerError::InvalidOpcode(opcode as u8)),
         };
         Ok(decoded)
     }
