@@ -9,7 +9,7 @@
 /// # Returns
 /// 
 /// * `Ok(u<size>)` - The extracted bits
-/// * `Err(&'static str)` - Error message
+/// * `Err(DisassemblerError)` - Error message
 /// 
 /// # Examples
 /// 
@@ -38,7 +38,54 @@ macro_rules! extract_bits {
     }};
 }
 
-pub(crate) use extract_bits;
+/// Sign-extends a number from chosen sign bit to 32 bits
+/// 
+/// # Arguments
+/// 
+/// * `num` - The number to sign-extend
+/// * `curr_size` - The number of bits to consider for sign extension
+/// 
+/// # Returns
+/// 
+/// * `Ok(i32)` - The sign-extended number
+/// * `Err(DisassemblerError)` - Error message
+/// 
+/// # Examples
+/// 
+/// ```
+/// use risc_v_disassembler::sign_extend32;
+/// 
+/// let bits: u32 = 0b0010;
+/// let result = sign_extend32!(bits, 3).unwrap();
+/// assert_eq!(result, 2);
+/// 
+/// let bits: u32 = 0b1010;
+/// let result = sign_extend32!(bits, 4).unwrap();
+/// assert_eq!(result, -6);
+/// ```
+/// 
+#[macro_export]
+macro_rules! sign_extend32 {
+    ($num:expr, $curr_size:expr) => {{
+        if $curr_size > 32 {
+            Err($crate::DisassemblerError::BitExtensionError("Size exceeds 32 bits"))
+        } else {
+            let sign_bit: u32 = 1 << ($curr_size - 1);
+            let mask: u32 = (1 << $curr_size - 1) - 1; 
+            let sign_extended: u32 = if $num & sign_bit != 0 {
+                ($num as u32) | !mask
+            } else {
+                $num
+            };
+            Ok(sign_extended as i32)
+        }
+    }}; 
+}
+
+pub(crate) use {
+    extract_bits,
+    sign_extend32,
+};
 
 
 #[cfg(test)]
@@ -165,6 +212,21 @@ mod tests {
 
         let result = extract_bits!(number, 4, 7);
         assert_eq!(result, Ok(0b011));
+    }
+
+    #[test]
+    fn test_sign_extend32(){
+        let bits: u32 = 0b0010;
+        let result = sign_extend32!(bits, 3).unwrap();
+        assert_eq!(result, 2);
+
+        let bits: u32 = 0b1010;
+        let result = sign_extend32!(bits, 4).unwrap();
+        assert_eq!(result, -6);
+
+        let bits: u32 = 0b1010;
+        let result = sign_extend32!(bits, 5).unwrap();
+        assert_eq!(result, 10);
     }
 
 }

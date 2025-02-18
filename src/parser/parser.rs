@@ -30,7 +30,6 @@ impl ParseInstruction32 for DecodedInstruction32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::helpers::variable_bit_structures::VarBitInt;
 
 
     #[test]
@@ -49,13 +48,12 @@ mod tests {
 
     #[test]
     fn test_parse_instruction32_itype_addi() {
-        let imm = VarBitInt::new(0b000000000001, 12);
         let decoded = DecodedInstruction32::IType {
             opcode: 0b0010011,
             rd: 0b00001,
             funct3: 0b000,
             rs1: 0b00010,
-            imm: imm,
+            imm: 1,
         };
         let result = decoded.parse_instruction32().unwrap();
         assert!(matches!(result, ParsedInstruction32::addi {..}));
@@ -63,10 +61,9 @@ mod tests {
 
     #[test]
     fn test_parse_instruction32_stype_sb() {
-        let imm = VarBitInt::new(0b000000000001, 12);
         let decoded = DecodedInstruction32::SType {
             opcode: 0b0100011,
-            imm: imm,
+            imm: 1,
             funct3: 0b000,
             rs1: 0b00010,
             rs2: 0b00011,
@@ -77,10 +74,9 @@ mod tests {
 
     #[test]
     fn test_parse_instruction32_btype_beq() {
-        let imm = VarBitInt::new(0b000000000001, 12);
         let decoded = DecodedInstruction32::BType {
             opcode: 0b1100011,
-            imm: imm,
+            imm: 1,
             funct3: 0b000,
             rs1: 0b00010,
             rs2: 0b00011,
@@ -91,11 +87,10 @@ mod tests {
 
     #[test]
     fn test_parse_instruction32_utype_lui() {
-        let imm = VarBitInt::new(0b000000000001, 20);
         let decoded = DecodedInstruction32::UType {
             opcode: 0b0110111,
             rd: 0b00001,
-            imm: imm,
+            imm: (1 as i32) << 12,
         };
         let result = decoded.parse_instruction32().unwrap();
         assert!(matches!(result, ParsedInstruction32::lui {..}));
@@ -103,11 +98,10 @@ mod tests {
 
     #[test]
     fn test_parse_instruction32_jtype_jal() {
-        let imm = VarBitInt::new(0b000000000001, 20);
         let decoded = DecodedInstruction32::JType {
             opcode: 0b1101111,
             rd: 0b00001,
-            imm: imm,
+            imm: 1,
         };
         let result = decoded.parse_instruction32().unwrap();
         assert!(matches!(result, ParsedInstruction32::jal {..}));
