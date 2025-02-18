@@ -1,12 +1,14 @@
 //! A simple disassembler for the RISC-V instruction set architecture.
-//! It currently supports RV32I instructions only.
+//! It currently only supports 32 bit RV32I instructions.
 //! 
+//! ### Supported Instruction Sets
+//!  - RV32I
 //! 
-//! Parses a 4-byte array into a `ParsedInstruction32` enum representing a RISC-V instruction.
+//! Parses a byte array slice into a `ParsedInstruction32` enum representing a RISC-V instruction.
 //! 
 //! ### Arguments
 //! 
-//! * `bytes` - A slice of 4 bytes representing the encoded instruction to be parsed.
+//! * `bytes` - A slice of bytes representing the encoded instruction to be parsed.
 //! 
 //! ### Returns
 //! 
@@ -43,7 +45,7 @@ use thiserror::Error;
 
 pub fn parse(bytes : &[u8]) -> Result<ParsedInstruction32, DisassemblerError> {
     if bytes.len() != 4 {
-        return Err(DisassemblerError::InvalidInputLength(bytes.len()));
+        return Err(DisassemblerError::UnsupportedInstructionLength(bytes.len()));
     }
     
     let instruction = Instruction32::from_le_bytes(bytes.try_into().unwrap());
@@ -55,8 +57,8 @@ pub fn parse(bytes : &[u8]) -> Result<ParsedInstruction32, DisassemblerError> {
 
 #[derive(Debug, Error, PartialEq)]
 pub enum DisassemblerError {
-    #[error("Invalid input length: {0}. The input must be 32 bits long.")]
-    InvalidInputLength(usize),
+    #[error("Unsupported instruction length: {0}. The length of the instruction is not supported.")]
+    UnsupportedInstructionLength(usize),
 
     #[error("Invalid funct3 field with value {0:b}. The value is not valid for the given instruction.")]
     InvalidFunct3(u8),
