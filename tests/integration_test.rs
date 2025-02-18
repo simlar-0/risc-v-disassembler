@@ -54,8 +54,8 @@ mod tests {
             (0x010000EF, ParsedInstruction32::jal { rd: Register::x1, imm: 16 }),
 
             // U-type instructions
-            (0x000100b7, ParsedInstruction32::lui { rd: Register::x1, imm: 16 }),
-            (0x00010097, ParsedInstruction32::auipc { rd: Register::x1, imm: 16 }),
+            (0x000100b7, ParsedInstruction32::lui { rd: Register::x1, imm: 16<<12 }),
+            (0x00010097, ParsedInstruction32::auipc { rd: Register::x1, imm: 16<<12 }),
 
             // I-type jump instruction
             (0x00A500E7, ParsedInstruction32::jalr { rd: Register::x1, rs1: Register::x10, imm: 10 }),

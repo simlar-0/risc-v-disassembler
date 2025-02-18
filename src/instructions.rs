@@ -1,4 +1,3 @@
-use crate::helpers::variable_bit_structures::VarBitInt;
 use crate::registers::Register;
 use crate::DisassemblerError;
 
@@ -17,18 +16,18 @@ pub(crate) enum DecodedInstruction32 {
         rd: u8,
         funct3: u8,
         rs1: u8,
-        imm: VarBitInt,
+        imm: i32,
     },
     SType {
         opcode: u8,
-        imm: VarBitInt,
+        imm: i32,
         funct3: u8,
         rs1: u8,
         rs2: u8,
     },
     BType {
         opcode: u8,
-        imm: VarBitInt,
+        imm: i32,
         funct3: u8,
         rs1: u8,
         rs2: u8,
@@ -36,12 +35,12 @@ pub(crate) enum DecodedInstruction32 {
     UType {
         opcode: u8,
         rd: u8,
-        imm: VarBitInt,
+        imm: i32,
     },
     JType {
         opcode: u8,
         rd: u8,
-        imm: VarBitInt
+        imm: i32
     },
 }
 

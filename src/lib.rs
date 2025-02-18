@@ -33,7 +33,6 @@
 
 mod registers;
 mod instructions;
-mod helpers;
 mod macros;
 mod decoder;
 mod parser;
@@ -80,5 +79,8 @@ pub enum DisassemblerError {
     
     #[error("Cannot convert a VarBit with size greater than {0} bits to {1}.")]
     VarBitSizeExceeded(u8, &'static str),
+
+    #[error("Bit extension error: {0}.")]
+    BitExtensionError(&'static str),
 }
 
