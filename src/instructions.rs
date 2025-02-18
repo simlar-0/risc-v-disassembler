@@ -3,7 +3,7 @@ use crate::registers::Register;
 use crate::DisassemblerError;
 
 pub type Instruction32 = u32;
-pub enum DecodedInstruction32 {
+pub(crate) enum DecodedInstruction32 {
     RType {
         opcode: u8,
         rd: u8,
@@ -234,10 +234,10 @@ pub enum ParsedInstruction32 {
     ebreak,
 }
 
-pub trait DecodeInstruction32 {
+pub(crate) trait DecodeInstruction32 {
     fn decode_instruction32(&self) -> Result<DecodedInstruction32, DisassemblerError>;
 }
 
-pub trait ParseInstruction32 {
+pub(crate) trait ParseInstruction32 {
     fn parse_instruction32(&self) -> Result<ParsedInstruction32, DisassemblerError>;
 }
