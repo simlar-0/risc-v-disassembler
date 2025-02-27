@@ -1,14 +1,12 @@
 {
-    "cSpell.ignoreWords": [
+    "cSpell.words": [
         "bitvec",
         "btype",
         "itype",
         "jtype",
         "rtype",
         "stype",
-        "utype"
-    ],
-    "cSpell.words": [
+        "utype",
         "addi",
         "andi",
         "auipc",
@@ -17,12 +15,14 @@
         "ebreak",
         "ecall",
         "jalr",
+        "repr",
         "slli",
         "slti",
         "sltiu",
         "sltu",
         "srai",
         "srli",
+        "XLEN",
         "xori"
     ]
 }
