@@ -1,3 +1,4 @@
+use std::fmt;
 use crate::registers::Register;
 use crate::DisassemblerError;
 
@@ -239,4 +240,83 @@ pub(crate) trait DecodeInstruction32 {
 
 pub(crate) trait ParseInstruction32 {
     fn parse_instruction32(&self) -> Result<ParsedInstruction32, DisassemblerError>;
+}
+
+impl fmt::Display for ParsedInstruction32 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ParsedInstruction32::add { rd, rs1, rs2 } => write!(f, "add {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::sub { rd, rs1, rs2 } => write!(f, "sub {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::xor { rd, rs1, rs2 } => write!(f, "xor {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::or { rd, rs1, rs2 } => write!(f, "or {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::and { rd, rs1, rs2 } => write!(f, "and {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::sll { rd, rs1, rs2 } => write!(f, "sll {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::srl { rd, rs1, rs2 } => write!(f, "srl {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::sra { rd, rs1, rs2 } => write!(f, "sra {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::slt { rd, rs1, rs2 } => write!(f, "slt {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::sltu { rd, rs1, rs2 } => write!(f, "sltu {}, {}, {}", rd, rs1, rs2),
+            ParsedInstruction32::addi { rd, rs1, imm } => write!(f, "addi {}, {}, {}", rd, rs1, imm),
+            ParsedInstruction32::xori { rd, rs1, imm } => write!(f, "xori {}, {}, {}", rd, rs1, imm),
+            ParsedInstruction32::ori { rd, rs1, imm } => write!(f, "ori {}, {}, {}", rd, rs1, imm),
+            ParsedInstruction32::andi { rd, rs1, imm } => write!(f, "andi {}, {}, {}", rd, rs1, imm),
+            ParsedInstruction32::slli { rd, rs1, shamt } => write!(f, "slli {}, {}, {}", rd, rs1, shamt),
+            ParsedInstruction32::srli { rd, rs1, shamt } => write!(f, "srli {}, {}, {}", rd, rs1, shamt),
+            ParsedInstruction32::srai { rd, rs1, shamt } => write!(f, "srai {}, {}, {}", rd, rs1, shamt),
+            ParsedInstruction32::slti { rd, rs1, imm } => write!(f, "slti {}, {}, {}", rd, rs1, imm),
+            ParsedInstruction32::sltiu { rd, rs1, imm } => write!(f, "sltiu {}, {}, {}", rd, rs1, imm),
+            ParsedInstruction32::lb { rd, rs1, imm } => write!(f, "lb {}, {}({})", rd, imm, rs1),
+            ParsedInstruction32::lh { rd, rs1, imm } => write!(f, "lh {}, {}({})", rd, imm, rs1),
+            ParsedInstruction32::lw { rd, rs1, imm } => write!(f, "lw {}, {}({})", rd, imm, rs1),
+            ParsedInstruction32::lbu { rd, rs1, imm } => write!(f, "lbu {}, {}({})", rd, imm, rs1),
+            ParsedInstruction32::lhu { rd, rs1, imm } => write!(f, "lhu {}, {}({})", rd, imm, rs1),
+            ParsedInstruction32::sb { rs1, rs2, imm } => write!(f, "sb {}, {}({})", rs2, imm, rs1),
+            ParsedInstruction32::sh { rs1, rs2, imm } => write!(f, "sh {}, {}({})", rs2, imm, rs1),
+            ParsedInstruction32::sw { rs1, rs2, imm } => write!(f, "sw {}, {}({})", rs2, imm, rs1),
+            ParsedInstruction32::beq { rs1, rs2, imm } => write!(f, "beq {}, {}, {}", rs1, rs2, imm),
+            ParsedInstruction32::bne { rs1, rs2, imm } => write!(f, "bne {}, {}, {}", rs1, rs2, imm),
+            ParsedInstruction32::blt { rs1, rs2, imm } => write!(f, "blt {}, {}, {}", rs1, rs2, imm),
+            ParsedInstruction32::bge { rs1, rs2, imm } => write!(f, "bge {}, {}, {}", rs1, rs2, imm),
+            ParsedInstruction32::bltu { rs1, rs2, imm } => write!(f, "bltu {}, {}, {}", rs1, rs2, imm),
+            ParsedInstruction32::bgeu { rs1, rs2, imm } => write!(f, "bgeu {}, {}, {}", rs1, rs2, imm),
+            ParsedInstruction32::jal { rd, imm } => write!(f, "jal {}, {}", rd, imm),
+            ParsedInstruction32::jalr { rd, rs1, imm } => write!(f, "jalr {}, {}({})", rd, imm, rs1),
+            ParsedInstruction32::lui { rd, imm } => write!(f, "lui {}, {}", rd, imm),
+            ParsedInstruction32::auipc { rd, imm } => write!(f, "auipc {}, {}", rd, imm),
+            ParsedInstruction32::ecall => write!(f, "ecall"),
+            ParsedInstruction32::ebreak => write!(f, "ebreak"),
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::ParsedInstruction32;
+    use crate::registers::Register;
+
+    
+    #[test]
+    fn test_instruction_printing() {
+        let parsed_add: ParsedInstruction32 = ParsedInstruction32::add {
+            rd: Register::x1,
+            rs1: Register::x2,
+            rs2: Register::x3,
+        };
+        assert_eq!(format!("{}", parsed_add), "add x1, x2, x3");
+
+        let parsed_addi: ParsedInstruction32 = ParsedInstruction32::addi {
+            rd: Register::x1,
+            rs1: Register::x31,
+            imm: -5,
+        };
+        assert_eq!(format!("{}", parsed_addi), "addi x1, x31, -5");
+
+        let parsed_jal: ParsedInstruction32 = ParsedInstruction32::jal {
+            rd: Register::x1,
+            imm: 5,
+        };
+        assert_eq!(format!("{}", parsed_jal), "jal x1, 5");
+
+        let parsed_ecall: ParsedInstruction32 = ParsedInstruction32::ecall;
+        assert_eq!(format!("{}", parsed_ecall), "ecall");
+    }
 }
