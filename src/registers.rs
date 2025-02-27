@@ -1,3 +1,4 @@
+use std::fmt;
 use crate::DisassemblerError;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
@@ -96,6 +97,21 @@ impl TryFrom<u8> for SpecialRegister {
             0 => Ok(SpecialRegister::XLEN),
             1 => Ok(SpecialRegister::pc),
             _ => Err(DisassemblerError::InvalidRegister(value)),
+        }
+    }
+}
+
+impl fmt::Display for Register {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "x{}", *self as u8)
+    }
+}
+
+impl fmt::Display for SpecialRegister {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            SpecialRegister::XLEN => write!(f, "XLEN"),
+            SpecialRegister::pc => write!(f, "pc"),
         }
     }
 }
