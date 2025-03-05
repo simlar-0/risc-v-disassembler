@@ -1,0 +1,77 @@
+
+demo:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_ZN4demo3add17h21b1282e81bd6ed0E>:
+80000000:	ff010113          	addi	x2,x2,-16
+80000004:	00b12023          	sw	x11,0(x2)
+80000008:	00050613          	addi	x12,x10,0
+8000000c:	00012503          	lw	x10,0(x2)
+80000010:	00c12423          	sw	x12,8(x2)
+80000014:	00a12623          	sw	x10,12(x2)
+80000018:	00a605b3          	add	x11,x12,x10
+8000001c:	00b12223          	sw	x11,4(x2)
+80000020:	00c5a5b3          	slt	x11,x11,x12
+80000024:	00052513          	slti	x10,x10,0
+80000028:	00b51a63          	bne	x10,x11,8000003c <_ZN4demo3add17h21b1282e81bd6ed0E+0x3c>
+8000002c:	0040006f          	jal	x0,80000030 <_ZN4demo3add17h21b1282e81bd6ed0E+0x30>
+80000030:	00412503          	lw	x10,4(x2)
+80000034:	01010113          	addi	x2,x2,16
+80000038:	00008067          	jalr	x0,0(x1)
+8000003c:	80000537          	lui	x10,0x80000
+80000040:	10450513          	addi	x10,x10,260 # 80000104 <.L__unnamed_1>
+80000044:	00000097          	auipc	x1,0x0
+80000048:	070080e7          	jalr	x1,112(x1) # 800000b4 <_ZN4core9panicking11panic_const24panic_const_add_overflow17h41261cdd67b5ac36E>
+
+8000004c <_start>:
+8000004c:	ff010113          	addi	x2,x2,-16
+80000050:	00112623          	sw	x1,12(x2)
+80000054:	00100513          	addi	x10,x0,1
+80000058:	00a12023          	sw	x10,0(x2)
+8000005c:	00200593          	addi	x11,x0,2
+80000060:	00b12223          	sw	x11,4(x2)
+80000064:	00000097          	auipc	x1,0x0
+80000068:	f9c080e7          	jalr	x1,-100(x1) # 80000000 <_ZN4demo3add17h21b1282e81bd6ed0E>
+8000006c:	00a12423          	sw	x10,8(x2)
+80000070:	0040006f          	jal	x0,80000074 <_start+0x28>
+80000074:	0000006f          	jal	x0,80000074 <_start+0x28>
+
+80000078 <rust_begin_unwind>:
+80000078:	ff010113          	addi	x2,x2,-16
+8000007c:	00a12623          	sw	x10,12(x2)
+80000080:	0040006f          	jal	x0,80000084 <rust_begin_unwind+0xc>
+80000084:	0000006f          	jal	x0,80000084 <rust_begin_unwind+0xc>
+
+80000088 <_ZN4core9panicking9panic_fmt17h66622ac2ece829a7E>:
+80000088:	fe010113          	addi	x2,x2,-32
+8000008c:	00112e23          	sw	x1,28(x2)
+80000090:	00812c23          	sw	x8,24(x2)
+80000094:	02010413          	addi	x8,x2,32
+80000098:	fea42623          	sw	x10,-20(x8)
+8000009c:	feb42823          	sw	x11,-16(x8)
+800000a0:	00100513          	addi	x10,x0,1
+800000a4:	fea41a23          	sh	x10,-12(x8)
+800000a8:	fec40513          	addi	x10,x8,-20
+800000ac:	00000097          	auipc	x1,0x0
+800000b0:	fcc080e7          	jalr	x1,-52(x1) # 80000078 <rust_begin_unwind>
+
+800000b4 <_ZN4core9panicking11panic_const24panic_const_add_overflow17h41261cdd67b5ac36E>:
+800000b4:	fe010113          	addi	x2,x2,-32
+800000b8:	00112e23          	sw	x1,28(x2)
+800000bc:	00812c23          	sw	x8,24(x2)
+800000c0:	02010413          	addi	x8,x2,32
+800000c4:	00050593          	addi	x11,x10,0
+800000c8:	80000537          	lui	x10,0x80000
+800000cc:	13050513          	addi	x10,x10,304 # 80000130 <.Lanon.423f4f724e7608ef94dd083e310d3415.125>
+800000d0:	fea42023          	sw	x10,-32(x8)
+800000d4:	00100513          	addi	x10,x0,1
+800000d8:	fea42223          	sw	x10,-28(x8)
+800000dc:	fe042823          	sw	x0,-16(x8)
+800000e0:	00400513          	addi	x10,x0,4
+800000e4:	fea42423          	sw	x10,-24(x8)
+800000e8:	fe042623          	sw	x0,-20(x8)
+800000ec:	fe040513          	addi	x10,x8,-32
+800000f0:	00000097          	auipc	x1,0x0
+800000f4:	f98080e7          	jalr	x1,-104(x1) # 80000088 <_ZN4core9panicking9panic_fmt17h66622ac2ece829a7E>
