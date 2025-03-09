@@ -83,9 +83,6 @@ pub enum DisassemblerError {
     
     #[error("Bit extraction error: {0}.")]
     BitExtractionError(&'static str),
-    
-    #[error("Cannot convert a VarBit with size greater than {0} bits to {1}.")]
-    VarBitSizeExceeded(u8, &'static str),
 
     #[error("Bit extension error: {0}.")]
     BitExtensionError(&'static str),
