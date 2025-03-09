@@ -5,7 +5,7 @@ mod tests {
     use risc_v_disassembler::Register;
 
     /// Returns a vector of tuples containing (instruction hex, expected ParsedInstruction32) for RV32I instructions
-    fn get_rv32i_test_cases() -> Vec<(u32, ParsedInstruction32)> {
+    fn get_rv32i_be_test_cases() -> Vec<(u32, ParsedInstruction32)> {
         vec![
             // R-type instructions
             (0x00B50533, ParsedInstruction32::add { rd: Register::x10, rs1: Register::x10, rs2: Register::x11 }),
@@ -63,11 +63,21 @@ mod tests {
     }
 
     #[test]
-    fn test_rv32i_instructions() {
-        for (hex, expected) in get_rv32i_test_cases() {
-            let result = parse(&hex.to_le_bytes());
+    fn test_rv32i_instructions_le() {
+        for (hex, expected) in get_rv32i_be_test_cases() {
+            let result = parse(&hex.to_le_bytes(), false);
             assert!(result.is_ok(), "Failed to parse instruction {:#010x}", hex);
             assert_eq!(result.unwrap(), expected);
         }
     }
+
+    #[test]
+    fn test_rv32i_instructions_be() {
+        for (hex, expected) in get_rv32i_be_test_cases() {
+            let result = parse(&hex.to_be_bytes(), true);
+            assert!(result.is_ok(), "Failed to parse instruction {:#010x}", hex);
+            assert_eq!(result.unwrap(), expected);
+        }
+    }
+
 }
