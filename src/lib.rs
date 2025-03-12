@@ -19,17 +19,22 @@
 //! ### Example
 //! 
 //! ```
-//! use risc_v_disassembler::{parse, ParsedInstruction32, Register};
+//! use risc_v_disassembler::{
+//!     parse,
+//!     ParsedInstruction32,
+//!     parsed_instructions::*
+//! };
+//! use risc_v_disassembler::Register;
 //! 
 //! let bytes = [0x93, 0x00, 0x51, 0x00];
 //! let is_big_endian = false;
 //! let parsed_instruction = parse(&bytes, is_big_endian).unwrap();
 //! 
-//! assert_eq!(parsed_instruction, ParsedInstruction32::addi {
+//! assert_eq!(parsed_instruction, ParsedInstruction32::addi (addi {
 //!     rd: Register::x1,
 //!     rs1: Register::x2,
 //!     imm: 5
-//! });
+//! }));
 //! ```
 //! 
 
