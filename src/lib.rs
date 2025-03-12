@@ -9,6 +9,7 @@
 //! ### Arguments
 //! 
 //! * `bytes` - A slice of bytes representing the encoded instruction to be parsed.
+//! * `is_big_endian` - A boolean indicating whether the bytes are in big endian format.
 //! 
 //! ### Returns
 //! 
@@ -21,7 +22,8 @@
 //! use risc_v_disassembler::{parse, ParsedInstruction32, Register};
 //! 
 //! let bytes = [0x93, 0x00, 0x51, 0x00];
-//! let parsed_instruction = parse(&bytes).unwrap();
+//! let is_big_endian = false;
+//! let parsed_instruction = parse(&bytes, is_big_endian).unwrap();
 //! 
 //! assert_eq!(parsed_instruction, ParsedInstruction32::addi {
 //!     rd: Register::x1,
@@ -42,12 +44,17 @@ pub use registers::Register;
 use instructions::{Instruction32, ParseInstruction32, DecodeInstruction32};
 use thiserror::Error;
 
-pub fn parse(bytes : &[u8]) -> Result<ParsedInstruction32, DisassemblerError> {
+pub fn parse(bytes : &[u8], is_big_endian: bool) -> Result<ParsedInstruction32, DisassemblerError> {
     if bytes.len() != 4 {
         return Err(DisassemblerError::UnsupportedInstructionLength(bytes.len()));
     }
     
-    let instruction = Instruction32::from_le_bytes(bytes.try_into().unwrap());
+    let instruction = if is_big_endian {
+        Instruction32::from_be_bytes(bytes.try_into().unwrap())
+    } else {
+        Instruction32::from_le_bytes(bytes.try_into().unwrap())
+    };
+
     let parsed_instruction = instruction
         .decode_instruction32()?
         .parse_instruction32()?;
@@ -76,9 +83,6 @@ pub enum DisassemblerError {
     
     #[error("Bit extraction error: {0}.")]
     BitExtractionError(&'static str),
-    
-    #[error("Cannot convert a VarBit with size greater than {0} bits to {1}.")]
-    VarBitSizeExceeded(u8, &'static str),
 
     #[error("Bit extension error: {0}.")]
     BitExtensionError(&'static str),
