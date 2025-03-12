@@ -1,4 +1,7 @@
-use crate::instructions::ParsedInstruction32;
+use crate::instructions::{
+    ParsedInstruction32,
+    parsed_instructions::*
+};
 use crate::registers::Register;
 use crate::DisassemblerError;
 
@@ -7,7 +10,7 @@ pub(crate) fn parse_jtype32(opcode: &u8, rd: &u8, imm: &i32) -> Result<ParsedIns
 
 
     match opcode {
-        0b1101111 => Ok(ParsedInstruction32::jal { rd, imm: *imm}),
+        0b1101111 => Ok(ParsedInstruction32::jal (jal { rd, imm: *imm})),
         _ => Err(DisassemblerError::InvalidOpcode(*opcode)),
     }
 }

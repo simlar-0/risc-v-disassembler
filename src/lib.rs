@@ -39,7 +39,10 @@ mod macros;
 mod decoder;
 mod parser;
 
-pub use instructions::ParsedInstruction32;
+pub use instructions::{
+    ParsedInstruction32,
+    parsed_instructions,
+};
 pub use registers::{Register, SpecialRegister};
 use instructions::{Instruction32, ParseInstruction32, DecodeInstruction32};
 use thiserror::Error;

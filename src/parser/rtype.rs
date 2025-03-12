@@ -1,4 +1,7 @@
-use crate::instructions::ParsedInstruction32;
+use crate::instructions::{
+    ParsedInstruction32,
+    parsed_instructions::*
+};
 use crate::registers::Register;
 use crate::DisassemblerError;
 
@@ -9,21 +12,21 @@ pub(crate) fn parse_rtype32(_opcode: &u8, rd: &u8, funct3: &u8, rs1: &u8, rs2: &
     
     match funct3 {
         0b000 => match funct7 {
-            0b0000000 => Ok(ParsedInstruction32::add { rd, rs1, rs2 }),
-            0b0100000 => Ok(ParsedInstruction32::sub { rd, rs1, rs2 }),
+            0b0000000 => Ok(ParsedInstruction32::add (add { rd, rs1, rs2 })),
+            0b0100000 => Ok(ParsedInstruction32::sub (sub { rd, rs1, rs2 })),
             _ => Err(DisassemblerError::InvalidFunct7(*funct7)),
         },
-        0b001 => Ok(ParsedInstruction32::sll { rd, rs1, rs2 }),
-        0b010 => Ok(ParsedInstruction32::slt { rd, rs1, rs2 }),
-        0b011 => Ok(ParsedInstruction32::sltu { rd, rs1, rs2 }),
-        0b100 => Ok(ParsedInstruction32::xor { rd, rs1, rs2 }),
+        0b001 => Ok(ParsedInstruction32::sll (sll { rd, rs1, rs2 })),
+        0b010 => Ok(ParsedInstruction32::slt (slt { rd, rs1, rs2 })),
+        0b011 => Ok(ParsedInstruction32::sltu (sltu { rd, rs1, rs2 })),
+        0b100 => Ok(ParsedInstruction32::xor (xor { rd, rs1, rs2 })),
         0b101 => match funct7 {
-            0b0000000 => Ok(ParsedInstruction32::srl { rd, rs1, rs2 }),
-            0b0100000 => Ok(ParsedInstruction32::sra { rd, rs1, rs2 }),
+            0b0000000 => Ok(ParsedInstruction32::srl (srl { rd, rs1, rs2 })),
+            0b0100000 => Ok(ParsedInstruction32::sra (sra { rd, rs1, rs2 })),
             _ => Err(DisassemblerError::InvalidFunct7(*funct7)),
         },
-        0b110 => Ok(ParsedInstruction32::or { rd, rs1, rs2 }),
-        0b111 => Ok(ParsedInstruction32::and { rd, rs1, rs2 }),
+        0b110 => Ok(ParsedInstruction32::or (or { rd, rs1, rs2 })),
+        0b111 => Ok(ParsedInstruction32::and (and { rd, rs1, rs2 })),
         _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }

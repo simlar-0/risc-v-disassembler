@@ -1,4 +1,7 @@
-use crate::instructions::ParsedInstruction32;
+use crate::instructions::{
+    ParsedInstruction32,
+    parsed_instructions::*
+};
 use crate::registers::Register;
 use crate::DisassemblerError;
 
@@ -6,8 +9,8 @@ pub(crate) fn parse_utype32(opcode: &u8, rd: &u8, imm: &i32) -> Result<ParsedIns
     let rd = Register::try_from(*rd)?;
     
     match opcode {
-        0b0110111 => Ok(ParsedInstruction32::lui { rd, imm: *imm }),
-        0b0010111 => Ok(ParsedInstruction32::auipc { rd, imm: *imm }),
+        0b0110111 => Ok(ParsedInstruction32::lui (lui { rd, imm: *imm })),
+        0b0010111 => Ok(ParsedInstruction32::auipc (auipc { rd, imm: *imm })),
         _ => Err(DisassemblerError::InvalidOpcode(*opcode)),
     }
 }
