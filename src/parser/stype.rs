@@ -1,4 +1,7 @@
-use crate::instructions::ParsedInstruction32;
+use crate::instructions::{
+    ParsedInstruction32,
+    parsed_instructions::*
+};
 use crate::registers::Register;
 use crate::DisassemblerError;
 
@@ -7,9 +10,9 @@ pub(crate) fn parse_stype32(_opcode: &u8, imm: &i32, funct3: &u8, rs1: &u8, rs2:
     let rs2 = Register::try_from(*rs2)?;
 
     match funct3 {
-        0b000 => Ok(ParsedInstruction32::sb { rs1, rs2, imm: *imm }),
-        0b001 => Ok(ParsedInstruction32::sh { rs1, rs2, imm: *imm }),
-        0b010 => Ok(ParsedInstruction32::sw { rs1, rs2, imm: *imm }),
+        0b000 => Ok(ParsedInstruction32::sb (sb { rs1, rs2, imm: *imm })),
+        0b001 => Ok(ParsedInstruction32::sh (sh { rs1, rs2, imm: *imm })),
+        0b010 => Ok(ParsedInstruction32::sw (sw { rs1, rs2, imm: *imm })),
         _ => Err(DisassemblerError::InvalidFunct3(*funct3)),
     }
 }
