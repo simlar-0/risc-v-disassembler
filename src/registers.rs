@@ -81,38 +81,9 @@ impl TryFrom<u8> for Register {
     }
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
-#[repr(u8)]
-#[allow(non_camel_case_types)]
-pub enum SpecialRegister {
-    XLEN = 0,
-    pc = 1,
-}
-
-impl TryFrom<u8> for SpecialRegister {
-    type Error = DisassemblerError;
-
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
-        match value {
-            0 => Ok(SpecialRegister::XLEN),
-            1 => Ok(SpecialRegister::pc),
-            _ => Err(DisassemblerError::InvalidRegister(value)),
-        }
-    }
-}
-
 impl fmt::Display for Register {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "x{}", *self as u8)
-    }
-}
-
-impl fmt::Display for SpecialRegister {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            SpecialRegister::XLEN => write!(f, "XLEN"),
-            SpecialRegister::pc => write!(f, "pc"),
-        }
     }
 }
 
@@ -154,11 +125,5 @@ mod tests {
         assert_eq!(29.try_into(), Ok(Register::x29));
         assert_eq!(30.try_into(), Ok(Register::x30));
         assert_eq!(31.try_into(), Ok(Register::x31));
-    }
-
-    #[test]
-    fn test_try_from_special_register() {
-        assert_eq!(0.try_into(), Ok(SpecialRegister::XLEN));
-        assert_eq!(1.try_into(), Ok(SpecialRegister::pc));
     }
 }

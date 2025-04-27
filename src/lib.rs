@@ -48,7 +48,7 @@ pub use instructions::{
     ParsedInstruction32,
     parsed_instructions,
 };
-pub use registers::{Register, SpecialRegister};
+pub use registers::Register;
 use instructions::{Instruction32, ParseInstruction32, DecodeInstruction32};
 use thiserror::Error;
 
