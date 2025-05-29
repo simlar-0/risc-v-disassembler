@@ -1,5 +1,5 @@
-use std::fmt;
 use crate::DisassemblerError;
+use std::fmt;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 #[repr(u8)]
@@ -37,6 +37,44 @@ pub enum Register {
     x29 = 29,
     x30 = 30,
     x31 = 31,
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+#[repr(u8)]
+#[allow(non_camel_case_types)]
+pub enum ABIRegister {
+    zero = 0,
+    ra = 1,
+    sp = 2,
+    gp = 3,
+    tp = 4,
+    t0 = 5,
+    t1 = 6,
+    t2 = 7,
+    s0 = 8,
+    s1 = 9,
+    a0 = 10,
+    a1 = 11,
+    a2 = 12,
+    a3 = 13,
+    a4 = 14,
+    a5 = 15,
+    a6 = 16,
+    a7 = 17,
+    s2 = 18,
+    s3 = 19,
+    s4 = 20,
+    s5 = 21,
+    s6 = 22,
+    s7 = 23,
+    s8 = 24,
+    s9 = 25,
+    s10 = 26,
+    s11 = 27,
+    t3 = 28,
+    t4 = 29,
+    t5 = 30,
+    t6 = 31,
 }
 
 impl TryFrom<u8> for Register {
@@ -81,9 +119,90 @@ impl TryFrom<u8> for Register {
     }
 }
 
+impl TryFrom<u8> for ABIRegister {
+    type Error = DisassemblerError;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(ABIRegister::zero),
+            1 => Ok(ABIRegister::ra),
+            2 => Ok(ABIRegister::sp),
+            3 => Ok(ABIRegister::gp),
+            4 => Ok(ABIRegister::tp),
+            5 => Ok(ABIRegister::t0),
+            6 => Ok(ABIRegister::t1),
+            7 => Ok(ABIRegister::t2),
+            8 => Ok(ABIRegister::s0),
+            9 => Ok(ABIRegister::s1),
+            10 => Ok(ABIRegister::a0),
+            11 => Ok(ABIRegister::a1),
+            12 => Ok(ABIRegister::a2),
+            13 => Ok(ABIRegister::a3),
+            14 => Ok(ABIRegister::a4),
+            15 => Ok(ABIRegister::a5),
+            16 => Ok(ABIRegister::a6),
+            17 => Ok(ABIRegister::a7),
+            18 => Ok(ABIRegister::s2),
+            19 => Ok(ABIRegister::s3),
+            20 => Ok(ABIRegister::s4),
+            21 => Ok(ABIRegister::s5),
+            22 => Ok(ABIRegister::s6),
+            23 => Ok(ABIRegister::s7),
+            24 => Ok(ABIRegister::s8),
+            25 => Ok(ABIRegister::s9),
+            26 => Ok(ABIRegister::s10),
+            27 => Ok(ABIRegister::s11),
+            28 => Ok(ABIRegister::t3),
+            29 => Ok(ABIRegister::t4),
+            30 => Ok(ABIRegister::t5),
+            31 => Ok(ABIRegister::t6),
+            _ => Err(DisassemblerError::InvalidRegister(value)),
+        }
+    }
+}
+
 impl fmt::Display for Register {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "x{}", *self as u8)
+    }
+}
+
+impl fmt::Display for ABIRegister {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ABIRegister::zero => write!(f, "zero"),
+            ABIRegister::ra => write!(f, "ra"),
+            ABIRegister::sp => write!(f, "sp"),
+            ABIRegister::gp => write!(f, "gp"),
+            ABIRegister::tp => write!(f, "tp"),
+            ABIRegister::t0 => write!(f, "t0"),
+            ABIRegister::t1 => write!(f, "t1"),
+            ABIRegister::t2 => write!(f, "t2"),
+            ABIRegister::s0 => write!(f, "s0"),
+            ABIRegister::s1 => write!(f, "s1"),
+            ABIRegister::a0 => write!(f, "a0"),
+            ABIRegister::a1 => write!(f, "a1"),
+            ABIRegister::a2 => write!(f, "a2"),
+            ABIRegister::a3 => write!(f, "a3"),
+            ABIRegister::a4 => write!(f, "a4"),
+            ABIRegister::a5 => write!(f, "a5"),
+            ABIRegister::a6 => write!(f, "a6"),
+            ABIRegister::a7 => write!(f, "a7"),
+            ABIRegister::s2 => write!(f, "s2"),
+            ABIRegister::s3 => write!(f, "s3"),
+            ABIRegister::s4 => write!(f, "s4"),
+            ABIRegister::s5 => write!(f, "s5"),
+            ABIRegister::s6 => write!(f, "s6"),
+            ABIRegister::s7 => write!(f, "s7"),
+            ABIRegister::s8 => write!(f, "s8"),
+            ABIRegister::s9 => write!(f, "s9"),
+            ABIRegister::s10 => write!(f, "s10"),
+            ABIRegister::s11 => write!(f, "s11"),
+            ABIRegister::t3 => write!(f, "t3"),
+            ABIRegister::t4 => write!(f, "t4"),
+            ABIRegister::t5 => write!(f, "t5"),
+            ABIRegister::t6 => write!(f, "t6"),
+        }
     }
 }
 
@@ -126,4 +245,41 @@ mod tests {
         assert_eq!(30.try_into(), Ok(Register::x30));
         assert_eq!(31.try_into(), Ok(Register::x31));
     }
+
+    #[test]
+    fn test_try_from_abi_register() {
+        assert_eq!(0.try_into(), Ok(ABIRegister::zero));
+        assert_eq!(1.try_into(), Ok(ABIRegister::ra));
+        assert_eq!(2.try_into(), Ok(ABIRegister::sp));
+        assert_eq!(3.try_into(), Ok(ABIRegister::gp));
+        assert_eq!(4.try_into(), Ok(ABIRegister::tp));
+        assert_eq!(5.try_into(), Ok(ABIRegister::t0));
+        assert_eq!(6.try_into(), Ok(ABIRegister::t1));
+        assert_eq!(7.try_into(), Ok(ABIRegister::t2));
+        assert_eq!(8.try_into(), Ok(ABIRegister::s0));
+        assert_eq!(9.try_into(), Ok(ABIRegister::s1));
+        assert_eq!(10.try_into(), Ok(ABIRegister::a0));
+        assert_eq!(11.try_into(), Ok(ABIRegister::a1));
+        assert_eq!(12.try_into(), Ok(ABIRegister::a2));
+        assert_eq!(13.try_into(), Ok(ABIRegister::a3));
+        assert_eq!(14.try_into(), Ok(ABIRegister::a4));
+        assert_eq!(15.try_into(), Ok(ABIRegister::a5));
+        assert_eq!(16.try_into(), Ok(ABIRegister::a6));
+        assert_eq!(17.try_into(), Ok(ABIRegister::a7));
+        assert_eq!(18.try_into(), Ok(ABIRegister::s2));
+        assert_eq!(19.try_into(), Ok(ABIRegister::s3));
+        assert_eq!(20.try_into(), Ok(ABIRegister::s4));
+        assert_eq!(21.try_into(), Ok(ABIRegister::s5));
+        assert_eq!(22.try_into(), Ok(ABIRegister::s6));
+        assert_eq!(23.try_into(), Ok(ABIRegister::s7));
+        assert_eq!(24.try_into(), Ok(ABIRegister::s8));
+        assert_eq!(25.try_into(), Ok(ABIRegister::s9));
+        assert_eq!(26.try_into(), Ok(ABIRegister::s10));
+        assert_eq!(27.try_into(), Ok(ABIRegister::s11));
+        assert_eq!(28.try_into(), Ok(ABIRegister::t3));
+        assert_eq!(29.try_into(), Ok(ABIRegister::t4));
+        assert_eq!(30.try_into(), Ok(ABIRegister::t5));
+        assert_eq!(31.try_into(), Ok(ABIRegister::t6));
+    }
 }
+
