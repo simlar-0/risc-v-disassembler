@@ -3,7 +3,7 @@ use std::fmt;
 
 pub trait Register {
     fn as_u8(&self) -> u8;
-    fn from_u8(value: u8) -> Result<Self, DisassemblerError>
+    fn try_from_u8(value: u8) -> Result<Self, DisassemblerError>
     where
         Self: Sized;
     fn as_str(&self) -> &'static str;
@@ -14,7 +14,7 @@ impl Register for NumberedRegister {
         *self as u8
     }
 
-    fn from_u8(value: u8) -> Result<Self, DisassemblerError> {
+    fn try_from_u8(value: u8) -> Result<Self, DisassemblerError> {
         NumberedRegister::try_from(value)
     }
 
@@ -61,7 +61,7 @@ impl Register for ABIRegister {
         *self as u8
     }
 
-    fn from_u8(value: u8) -> Result<Self, DisassemblerError> {
+    fn try_from_u8(value: u8) -> Result<Self, DisassemblerError> {
         ABIRegister::try_from(value)
     }
 

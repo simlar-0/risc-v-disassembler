@@ -7,7 +7,7 @@ pub(crate) fn parse_utype32<T: Register>(
     rd: &u8,
     imm: &i32,
 ) -> Result<ParsedInstruction32, DisassemblerError> {
-    let rd = T::from_u8(*rd)?.as_str();
+    let rd = T::try_from_u8(*rd)?.as_str();
 
     match opcode {
         0b0110111 => Ok(ParsedInstruction32::lui(lui { rd, imm: *imm })),

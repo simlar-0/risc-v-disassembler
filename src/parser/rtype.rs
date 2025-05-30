@@ -10,9 +10,9 @@ pub(crate) fn parse_rtype32<T: Register>(
     rs2: &u8,
     funct7: &u8,
 ) -> Result<ParsedInstruction32, DisassemblerError> {
-    let rd = T::from_u8(*rd)?.as_str();
-    let rs1 = T::from_u8(*rs1)?.as_str();
-    let rs2 = T::from_u8(*rs2)?.as_str();
+    let rd = T::try_from_u8(*rd)?.as_str();
+    let rs1 = T::try_from_u8(*rs1)?.as_str();
+    let rs2 = T::try_from_u8(*rs2)?.as_str();
 
     match funct3 {
         0b000 => match funct7 {
