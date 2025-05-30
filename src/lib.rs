@@ -31,8 +31,8 @@
 //! let parsed_instruction = parse(&bytes, is_big_endian, use_abi_register_names).unwrap();
 //!
 //! assert_eq!(parsed_instruction, ParsedInstruction32::addi (addi {
-//!     rd: "x1".to_string(),
-//!     rs1: "x2".to_string(),
+//!     rd: "x1",
+//!     rs1: "x2",
 //!     imm: 5
 //! }));
 //! ```
@@ -51,8 +51,8 @@
 //! let parsed_instruction = parse(&bytes, is_big_endian, use_abi_register_names).unwrap();
 
 //! assert_eq!(parsed_instruction, ParsedInstruction32::addi (addi {
-//!    rd: "ra".to_string(),
-//!    rs1: "sp".to_string(),
+//!    rd: "ra",
+//!    rs1: "sp",
 //!    imm: 4
 //! }));
 //! ``` `

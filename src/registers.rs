@@ -6,7 +6,7 @@ pub trait Register {
     fn from_u8(value: u8) -> Result<Self, DisassemblerError>
     where
         Self: Sized;
-    fn as_string(&self) -> String;
+    fn as_str(&self) -> &'static str;
 }
 
 impl Register for NumberedRegister {
@@ -18,8 +18,41 @@ impl Register for NumberedRegister {
         NumberedRegister::try_from(value)
     }
 
-    fn as_string(&self) -> String {
-        format!("x{}", *self as u8)
+    fn as_str(&self) -> &'static str {
+        match self {
+            NumberedRegister::x0 => "x0",
+            NumberedRegister::x1 => "x1",
+            NumberedRegister::x2 => "x2",
+            NumberedRegister::x3 => "x3",
+            NumberedRegister::x4 => "x4",
+            NumberedRegister::x5 => "x5",
+            NumberedRegister::x6 => "x6",
+            NumberedRegister::x7 => "x7",
+            NumberedRegister::x8 => "x8",
+            NumberedRegister::x9 => "x9",
+            NumberedRegister::x10 => "x10",
+            NumberedRegister::x11 => "x11",
+            NumberedRegister::x12 => "x12",
+            NumberedRegister::x13 => "x13",
+            NumberedRegister::x14 => "x14",
+            NumberedRegister::x15 => "x15",
+            NumberedRegister::x16 => "x16",
+            NumberedRegister::x17 => "x17",
+            NumberedRegister::x18 => "x18",
+            NumberedRegister::x19 => "x19",
+            NumberedRegister::x20 => "x20",
+            NumberedRegister::x21 => "x21",
+            NumberedRegister::x22 => "x22",
+            NumberedRegister::x23 => "x23",
+            NumberedRegister::x24 => "x24",
+            NumberedRegister::x25 => "x25",
+            NumberedRegister::x26 => "x26",
+            NumberedRegister::x27 => "x27",
+            NumberedRegister::x28 => "x28",
+            NumberedRegister::x29 => "x29",
+            NumberedRegister::x30 => "x30",
+            NumberedRegister::x31 => "x31",
+        }
     }
 }
 
@@ -32,40 +65,40 @@ impl Register for ABIRegister {
         ABIRegister::try_from(value)
     }
 
-    fn as_string(&self) -> String {
+    fn as_str(&self) -> &'static str {
         match self {
-            ABIRegister::zero => "zero".to_string(),
-            ABIRegister::ra => "ra".to_string(),
-            ABIRegister::sp => "sp".to_string(),
-            ABIRegister::gp => "gp".to_string(),
-            ABIRegister::tp => "tp".to_string(),
-            ABIRegister::t0 => "t0".to_string(),
-            ABIRegister::t1 => "t1".to_string(),
-            ABIRegister::t2 => "t2".to_string(),
-            ABIRegister::s0 => "s0".to_string(),
-            ABIRegister::s1 => "s1".to_string(),
-            ABIRegister::a0 => "a0".to_string(),
-            ABIRegister::a1 => "a1".to_string(),
-            ABIRegister::a2 => "a2".to_string(),
-            ABIRegister::a3 => "a3".to_string(),
-            ABIRegister::a4 => "a4".to_string(),
-            ABIRegister::a5 => "a5".to_string(),
-            ABIRegister::a6 => "a6".to_string(),
-            ABIRegister::a7 => "a7".to_string(),
-            ABIRegister::s2 => "s2".to_string(),
-            ABIRegister::s3 => "s3".to_string(),
-            ABIRegister::s4 => "s4".to_string(),
-            ABIRegister::s5 => "s5".to_string(),
-            ABIRegister::s6 => "s6".to_string(),
-            ABIRegister::s7 => "s7".to_string(),
-            ABIRegister::s8 => "s8".to_string(),
-            ABIRegister::s9 => "s9".to_string(),
-            ABIRegister::s10 => "s10".to_string(),
-            ABIRegister::s11 => "s11".to_string(),
-            ABIRegister::t3 => "t3".to_string(),
-            ABIRegister::t4 => "t4".to_string(),
-            ABIRegister::t5 => "t5".to_string(),
-            ABIRegister::t6 => "t6".to_string(),
+            ABIRegister::zero => "zero",
+            ABIRegister::ra => "ra",
+            ABIRegister::sp => "sp",
+            ABIRegister::gp => "gp",
+            ABIRegister::tp => "tp",
+            ABIRegister::t0 => "t0",
+            ABIRegister::t1 => "t1",
+            ABIRegister::t2 => "t2",
+            ABIRegister::s0 => "s0",
+            ABIRegister::s1 => "s1",
+            ABIRegister::a0 => "a0",
+            ABIRegister::a1 => "a1",
+            ABIRegister::a2 => "a2",
+            ABIRegister::a3 => "a3",
+            ABIRegister::a4 => "a4",
+            ABIRegister::a5 => "a5",
+            ABIRegister::a6 => "a6",
+            ABIRegister::a7 => "a7",
+            ABIRegister::s2 => "s2",
+            ABIRegister::s3 => "s3",
+            ABIRegister::s4 => "s4",
+            ABIRegister::s5 => "s5",
+            ABIRegister::s6 => "s6",
+            ABIRegister::s7 => "s7",
+            ABIRegister::s8 => "s8",
+            ABIRegister::s9 => "s9",
+            ABIRegister::s10 => "s10",
+            ABIRegister::s11 => "s11",
+            ABIRegister::t3 => "t3",
+            ABIRegister::t4 => "t4",
+            ABIRegister::t5 => "t5",
+            ABIRegister::t6 => "t6",
         }
     }
 }

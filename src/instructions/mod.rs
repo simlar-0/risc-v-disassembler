@@ -153,23 +153,20 @@ mod test {
     #[test]
     fn test_instruction_printing() {
         let parsed_add: ParsedInstruction32 = ParsedInstruction32::add(add {
-            rd: "x1".to_string(),
-            rs1: "x2".to_string(),
-            rs2: "x3".to_string(),
+            rd: "x1",
+            rs1: "x2",
+            rs2: "x3",
         });
         assert_eq!(format!("{}", parsed_add), "add x1, x2, x3");
 
         let parsed_addi: ParsedInstruction32 = ParsedInstruction32::addi(addi {
-            rd: "x1".to_string(),
-            rs1: "x31".to_string(),
+            rd: "x1",
+            rs1: "x31",
             imm: -5,
         });
         assert_eq!(format!("{}", parsed_addi), "addi x1, x31, -5");
 
-        let parsed_jal: ParsedInstruction32 = ParsedInstruction32::jal(jal {
-            rd: "x1".to_string(),
-            imm: 5,
-        });
+        let parsed_jal: ParsedInstruction32 = ParsedInstruction32::jal(jal { rd: "x1", imm: 5 });
         assert_eq!(format!("{}", parsed_jal), "jal x1, 5");
 
         let parsed_ecall: ParsedInstruction32 = ParsedInstruction32::ecall(ecall {});

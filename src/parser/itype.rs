@@ -10,8 +10,8 @@ pub(crate) fn parse_itype32<T: Register>(
     rs1: &u8,
     imm: &i32,
 ) -> Result<ParsedInstruction32, DisassemblerError> {
-    let rd = T::from_u8(*rd)?.as_string();
-    let rs1 = T::from_u8(*rs1)?.as_string();
+    let rd = T::from_u8(*rd)?.as_str();
+    let rs1 = T::from_u8(*rs1)?.as_str();
 
     match opcode {
         0b0000011 => parse_itype32_load(funct3, rd, rs1, *imm),
@@ -28,8 +28,8 @@ pub(crate) fn parse_itype32<T: Register>(
 
 fn parse_itype32_load(
     funct3: &u8,
-    rd: String,
-    rs1: String,
+    rd: &'static str,
+    rs1: &'static str,
     imm: i32,
 ) -> Result<ParsedInstruction32, DisassemblerError> {
     match funct3 {
@@ -44,8 +44,8 @@ fn parse_itype32_load(
 
 fn parse_itype32_alu(
     funct3: &u8,
-    rd: String,
-    rs1: String,
+    rd: &'static str,
+    rs1: &'static str,
     imm: i32,
 ) -> Result<ParsedInstruction32, DisassemblerError> {
     let imm_upper_bits = extract_bits!(imm, 5, 11)?;

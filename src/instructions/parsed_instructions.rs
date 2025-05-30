@@ -4,257 +4,257 @@ use std::fmt;
 
 #[derive(Debug, PartialEq)]
 pub struct add {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sub {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct xor {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct or {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct and {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sll {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct srl {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sra {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct slt {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sltu {
-    pub rd: String,
-    pub rs1: String,
-    pub rs2: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct addi {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct xori {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct ori {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct andi {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct slli {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub shamt: u8,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct srli {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub shamt: u8,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct srai {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub shamt: u8,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct slti {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sltiu {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct lb {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct lh {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct lw {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct lbu {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct lhu {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sb {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sh {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct sw {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct beq {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct bne {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct blt {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct bge {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct bltu {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct bgeu {
-    pub rs1: String,
-    pub rs2: String,
+    pub rs1: &'static str,
+    pub rs2: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct jal {
-    pub rd: String,
+    pub rd: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct jalr {
-    pub rd: String,
-    pub rs1: String,
+    pub rd: &'static str,
+    pub rs1: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct lui {
-    pub rd: String,
+    pub rd: &'static str,
     pub imm: i32,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct auipc {
-    pub rd: String,
+    pub rd: &'static str,
     pub imm: i32,
 }
 
@@ -497,4 +497,3 @@ impl fmt::Display for ebreak {
         write!(f, "ebreak")
     }
 }
-

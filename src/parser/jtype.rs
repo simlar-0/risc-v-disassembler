@@ -7,7 +7,7 @@ pub(crate) fn parse_jtype32<T: Register>(
     rd: &u8,
     imm: &i32,
 ) -> Result<ParsedInstruction32, DisassemblerError> {
-    let rd = T::from_u8(*rd)?.as_string();
+    let rd = T::from_u8(*rd)?.as_str();
 
     match opcode {
         0b1101111 => Ok(ParsedInstruction32::jal(jal { rd, imm: *imm })),
@@ -36,4 +36,3 @@ mod tests {
         );
     }
 }
-
