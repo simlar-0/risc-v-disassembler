@@ -6,6 +6,7 @@ pub trait Register {
     fn from_u8(value: u8) -> Result<Self, DisassemblerError>
     where
         Self: Sized;
+    fn as_string(&self) -> String;
 }
 
 impl Register for NumberedRegister {
@@ -16,6 +17,10 @@ impl Register for NumberedRegister {
     fn from_u8(value: u8) -> Result<Self, DisassemblerError> {
         NumberedRegister::try_from(value)
     }
+
+    fn as_string(&self) -> String {
+        format!("x{}", *self as u8)
+    }
 }
 
 impl Register for ABIRegister {
@@ -25,6 +30,43 @@ impl Register for ABIRegister {
 
     fn from_u8(value: u8) -> Result<Self, DisassemblerError> {
         ABIRegister::try_from(value)
+    }
+
+    fn as_string(&self) -> String {
+        match self {
+            ABIRegister::zero => "zero".to_string(),
+            ABIRegister::ra => "ra".to_string(),
+            ABIRegister::sp => "sp".to_string(),
+            ABIRegister::gp => "gp".to_string(),
+            ABIRegister::tp => "tp".to_string(),
+            ABIRegister::t0 => "t0".to_string(),
+            ABIRegister::t1 => "t1".to_string(),
+            ABIRegister::t2 => "t2".to_string(),
+            ABIRegister::s0 => "s0".to_string(),
+            ABIRegister::s1 => "s1".to_string(),
+            ABIRegister::a0 => "a0".to_string(),
+            ABIRegister::a1 => "a1".to_string(),
+            ABIRegister::a2 => "a2".to_string(),
+            ABIRegister::a3 => "a3".to_string(),
+            ABIRegister::a4 => "a4".to_string(),
+            ABIRegister::a5 => "a5".to_string(),
+            ABIRegister::a6 => "a6".to_string(),
+            ABIRegister::a7 => "a7".to_string(),
+            ABIRegister::s2 => "s2".to_string(),
+            ABIRegister::s3 => "s3".to_string(),
+            ABIRegister::s4 => "s4".to_string(),
+            ABIRegister::s5 => "s5".to_string(),
+            ABIRegister::s6 => "s6".to_string(),
+            ABIRegister::s7 => "s7".to_string(),
+            ABIRegister::s8 => "s8".to_string(),
+            ABIRegister::s9 => "s9".to_string(),
+            ABIRegister::s10 => "s10".to_string(),
+            ABIRegister::s11 => "s11".to_string(),
+            ABIRegister::t3 => "t3".to_string(),
+            ABIRegister::t4 => "t4".to_string(),
+            ABIRegister::t5 => "t5".to_string(),
+            ABIRegister::t6 => "t6".to_string(),
+        }
     }
 }
 

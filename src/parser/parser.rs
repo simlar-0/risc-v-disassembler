@@ -1,36 +1,55 @@
 use crate::instructions::{DecodedInstruction32, ParseInstruction32, ParsedInstruction32};
-use crate::DisassemblerError;
-use crate::parser::rtype::parse_rtype32;
-use crate::parser::itype::parse_itype32;
-use crate::parser::stype::parse_stype32;
 use crate::parser::btype::parse_btype32;
-use crate::parser::utype::parse_utype32;
+use crate::parser::itype::parse_itype32;
 use crate::parser::jtype::parse_jtype32;
-
+use crate::parser::rtype::parse_rtype32;
+use crate::parser::stype::parse_stype32;
+use crate::parser::utype::parse_utype32;
+use crate::{DisassemblerError, Register};
 
 impl ParseInstruction32 for DecodedInstruction32 {
-    fn parse_instruction32(&self) -> Result<ParsedInstruction32, DisassemblerError> {
+    fn parse_instruction32<T: Register>(&self) -> Result<ParsedInstruction32, DisassemblerError> {
         match self {
-            DecodedInstruction32::RType { opcode, rd, funct3, rs1, rs2, funct7 } => 
-                parse_rtype32(opcode, rd, funct3, rs1, rs2, funct7),
-            DecodedInstruction32::IType { opcode, rd, funct3, rs1, imm } =>
-                parse_itype32(opcode, rd, funct3, rs1, imm),
-            DecodedInstruction32::SType { opcode, imm, funct3, rs1, rs2 } =>
-                parse_stype32(opcode, imm, funct3, rs1, rs2),
-            DecodedInstruction32::BType { opcode, imm, funct3, rs1, rs2 } =>
-                parse_btype32(opcode, imm, funct3, rs1, rs2),
-            DecodedInstruction32::UType { opcode, rd, imm } =>
-                parse_utype32(opcode, rd, imm),
-            DecodedInstruction32::JType { opcode, rd, imm } =>
-                parse_jtype32(opcode, rd, imm),
+            DecodedInstruction32::RType {
+                opcode,
+                rd,
+                funct3,
+                rs1,
+                rs2,
+                funct7,
+            } => parse_rtype32::<T>(opcode, rd, funct3, rs1, rs2, funct7),
+            DecodedInstruction32::IType {
+                opcode,
+                rd,
+                funct3,
+                rs1,
+                imm,
+            } => parse_itype32::<T>(opcode, rd, funct3, rs1, imm),
+            DecodedInstruction32::SType {
+                opcode,
+                imm,
+                funct3,
+                rs1,
+                rs2,
+            } => parse_stype32::<T>(opcode, imm, funct3, rs1, rs2),
+            DecodedInstruction32::BType {
+                opcode,
+                imm,
+                funct3,
+                rs1,
+                rs2,
+            } => parse_btype32::<T>(opcode, imm, funct3, rs1, rs2),
+            DecodedInstruction32::UType { opcode, rd, imm } => parse_utype32::<T>(opcode, rd, imm),
+            DecodedInstruction32::JType { opcode, rd, imm } => parse_jtype32::<T>(opcode, rd, imm),
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::registers::NumberedRegister;
 
+    use super::*;
 
     #[test]
     fn test_parse_instruction32_rtype_add() {
@@ -42,8 +61,8 @@ mod tests {
             rs2: 0b00011,
             funct7: 0b0000000,
         };
-        let result = decoded.parse_instruction32().unwrap();
-        assert!(matches!(result, ParsedInstruction32::add {..}));
+        let result = decoded.parse_instruction32::<NumberedRegister>().unwrap();
+        assert!(matches!(result, ParsedInstruction32::add { .. }));
     }
 
     #[test]
@@ -55,8 +74,8 @@ mod tests {
             rs1: 0b00010,
             imm: 1,
         };
-        let result = decoded.parse_instruction32().unwrap();
-        assert!(matches!(result, ParsedInstruction32::addi {..}));
+        let result = decoded.parse_instruction32::<NumberedRegister>().unwrap();
+        assert!(matches!(result, ParsedInstruction32::addi { .. }));
     }
 
     #[test]
@@ -68,8 +87,8 @@ mod tests {
             rs1: 0b00010,
             rs2: 0b00011,
         };
-        let result = decoded.parse_instruction32().unwrap();
-        assert!(matches!(result, ParsedInstruction32::sb {..}));
+        let result = decoded.parse_instruction32::<NumberedRegister>().unwrap();
+        assert!(matches!(result, ParsedInstruction32::sb { .. }));
     }
 
     #[test]
@@ -81,8 +100,8 @@ mod tests {
             rs1: 0b00010,
             rs2: 0b00011,
         };
-        let result = decoded.parse_instruction32().unwrap();
-        assert!(matches!(result, ParsedInstruction32::beq {..}));
+        let result = decoded.parse_instruction32::<NumberedRegister>().unwrap();
+        assert!(matches!(result, ParsedInstruction32::beq { .. }));
     }
 
     #[test]
@@ -92,8 +111,8 @@ mod tests {
             rd: 0b00001,
             imm: (1 as i32) << 12,
         };
-        let result = decoded.parse_instruction32().unwrap();
-        assert!(matches!(result, ParsedInstruction32::lui {..}));
+        let result = decoded.parse_instruction32::<NumberedRegister>().unwrap();
+        assert!(matches!(result, ParsedInstruction32::lui { .. }));
     }
 
     #[test]
@@ -103,7 +122,8 @@ mod tests {
             rd: 0b00001,
             imm: 1,
         };
-        let result = decoded.parse_instruction32().unwrap();
-        assert!(matches!(result, ParsedInstruction32::jal {..}));
+        let result = decoded.parse_instruction32::<NumberedRegister>().unwrap();
+        assert!(matches!(result, ParsedInstruction32::jal { .. }));
     }
 }
+
