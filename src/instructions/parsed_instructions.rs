@@ -1,270 +1,268 @@
 #![allow(non_camel_case_types)]
 
 use std::fmt;
-use crate::registers::Register;
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct add {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sub {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct xor {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct or {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct and {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sll {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct srl {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sra {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct slt {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sltu {
-    pub rd: Register,
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rd: String,
+    pub rs1: String,
+    pub rs2: String,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct addi {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct xori {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct ori {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct andi {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct slli {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub shamt: u8,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct srli {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub shamt: u8,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct srai {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub shamt: u8,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct slti {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sltiu {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct lb {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct lh {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct lw {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct lbu {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct lhu {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sb {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sh {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct sw {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct beq {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct bne {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct blt {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct bge {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct bltu {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct bgeu {
-    pub rs1: Register,
-    pub rs2: Register,
+    pub rs1: String,
+    pub rs2: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct jal {
-    pub rd: Register,
+    pub rd: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct jalr {
-    pub rd: Register,
-    pub rs1: Register,
+    pub rd: String,
+    pub rs1: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct lui {
-    pub rd: Register,
+    pub rd: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct auipc {
-    pub rd: Register,
+    pub rd: String,
     pub imm: i32,
 }
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct ecall {}
 
-#[derive(Debug, PartialEq)] 
+#[derive(Debug, PartialEq)]
 pub struct ebreak {}
-
 
 impl fmt::Display for add {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -499,3 +497,4 @@ impl fmt::Display for ebreak {
         write!(f, "ebreak")
     }
 }
+
