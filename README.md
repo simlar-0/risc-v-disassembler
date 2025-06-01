@@ -1,50 +1,70 @@
 # RISC-V Disassembler
+
 A RISC-V disassembler that translates machine code into a Rust enum, with the main purpose of being used in [Symex](https://github.com/simlar-0/symex) symbolic execution engine.
+
 ## Supported / Planned Instruction Sets
+
 - [x] RV32I Base Integer Instruction Set
 - [ ] RV64I Base Integer Instruction Set
 - [ ] RV32E Base Integer Instruction Sets
 - [ ] RV64E Base Integer Instruction Sets
 - [ ] RV32C Compressed Extension
+
 ## Output Format (Example)
+
 ```Rust
 pub enum ParsedInstruction32 {
     add {
-        rd: Register,
-        rs1: Register,
-        rs2: Register,
+        rd: String,
+        rs1: String,
+        rs2: String,
     },
     addi {
-        rd: Register,
-        rs1: Register,
+        rd: String,
+        rs1: String,
         imm: i32,
     },
 }
 ```
-where:
-```Rust
-pub enum Register {
-    x0 = 0,
-    x1 = 1,
-    x2 = 2,
-    x3 = 3,
-    x4 = 4,
-    .
-    .
-    .
-    x31 = 31,
-}
-```
+
 ## Example Usage
+
 ```Rust
-use risc_v_disassembler::{parse, ParsedInstruction32, Register};
+ use risc_v_disassembler::{
+     parse,
+     ParsedInstruction32,
+     parsed_instructions::*
+ };
 
-let bytes = [0x93, 0x00, 0x51, 0x00];
-let parsed_instruction = parse(&bytes).unwrap();
+ let bytes = [0x93, 0x00, 0x51, 0x00];
+ let is_big_endian = false;
+ let use_abi_register_names = false;
+ let parsed_instruction = parse(&bytes, is_big_endian, use_abi_register_names).unwrap();
 
-assert_eq!(parsed_instruction, ParsedInstruction32::addi {
-    rd: Register::x1,
-    rs1: Register::x2,
-    imm: 5
-});
+ assert_eq!(parsed_instruction, ParsedInstruction32::addi (addi {
+     rd: "x1",
+     rs1: "x2",
+     imm: 5
+ }));
+```
+
+ Or using ABI register names:
+
+```Rust
+ use risc_v_disassembler::{
+     parse,
+     ParsedInstruction32,
+     parsed_instructions::*
+ };
+
+ let bytes = [0x93, 0x00, 0x41, 0x00];
+ let is_big_endian = false;
+ let use_abi_register_names = true;
+ let parsed_instruction = parse(&bytes, is_big_endian, use_abi_register_names).unwrap();
+
+ assert_eq!(parsed_instruction, ParsedInstruction32::addi (addi {
+    rd: "ra",
+    rs1: "sp",
+    imm: 4
+ }));
 ```
